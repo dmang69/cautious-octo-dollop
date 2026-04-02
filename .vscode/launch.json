@@ -1,147 +1,39 @@
 {
     "version": "0.2.0",
     "configurations": [
-        
         {
-            "type": "java",
-            "name": "Launch with Arguments Prompt",
+            "name": "IntentKernel (MSVC)",
+            "type": "cppvsdbg",
             "request": "launch",
-            "mainClass": "",
-            "args": "${command:SpecifyProgramArgs}"
-        },
-        {
-            "type": "jdk",
-            "request": "launch",
-            "name": "Launch Java App"
-        },
-        {
-            "type": "java",
-            "name": "Launch External Terminal",
-            "request": "launch",
+            "program": "${workspaceFolder}/test_harness.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
             "console": "externalTerminal",
-            "mainClass": ""
+            "preLaunchTask": "build-intentkernel"
         },
         {
-            "type": "java",
-            "name": "Launch Current File",
+            "name": "IntentKernel (MinGW)",
+            "type": "cppdbg",
             "request": "launch",
-            "mainClass": "${file}"
+            "program": "${workspaceFolder}/test_harness.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build-intentkernel-mingw"
         },
-        {
-            "type": "java",
-            "name": "Attach to Remote Program",
-            "request": "attach",
-            "hostName": "<The host name or ip address of remote debuggee>",
-            "port": "<debug port of remote debuggee>"
-        },
-        {
-            "type": "java",
-            "name": "Launch Java Program",
-            "request": "launch",
-            "mainClass": ""
-        },
-        {
-            "name": "Attach to Process",
-            "type": "jdk",
-            "request": "attach",
-            "processId": "${command:jdk.java.attachDebugger.pickProcess}"
-        },
-        {
-            "type": "java",
-            "name": "Attach to Remote Program",
-            "request": "attach",
-            "hostName": "<The host name or ip address of remote debuggee>",
-            "port": "<debug port of remote debuggee>"
-        },
-        {
-            "name": "Attach by com.sun.jdi.SharedMemoryListen",
-            "type": "jdk",
-            "request": "attach",
-            "listen": "true"
-        },
-        {
-            "type": "gdb",
-            "request": "launch",
-            "name": "Launch Program",
-            "target": "./bin/executable",
-            "cwd": "${workspaceRoot}",
-            "valuesFormatting": "parseText"
-        },
-        {
-            "name": "Launch Apex Debugger",
-            "type": "apex",
-            "request": "launch",
-            "userIdFilter": [],
-            "requestTypeFilter": [],
-            "entryPointFilter": "",
-            "salesforceProject": "${workspaceRoot}"
-        },
-        {
-            "name": "C#: <project-name> Debug",
-            "type": "dotnet",
-            "request": "launch",
-            "projectPath": "${workspaceFolder}/<relative-path-to-project-folder>/<project-name>.csproj"
-        },
-        {
-            "name": "Connect to server",
-            "type": "go",
-            "request": "attach",
-            "mode": "remote",
-            "remotePath": "${workspaceFolder}",
-            "port": 2345,
-            "host": "127.0.0.1"
-        },
-        {
-            "command": "npm start",
-            "name": "Run npm start",
-            "request": "launch",
-            "type": "node-terminal"
-        },
-        {
-            "type": "gdb",
-            "request": "attach",
-            "name": "Attach to gdbserver",
-            "executable": "./bin/executable",
-            "target": ":2345",
-            "remote": true,
-            "cwd": "${workspaceRoot}",
-            "valuesFormatting": "parseText"
-        },
-        {
-            "type": "gdb",
-            "request": "attach",
-            "name": "Attach to PID",
-            "target": "[PID]",
-            "cwd": "${workspaceRoot}",
-            "valuesFormatting": "parseText"
-        },
-        {
-            "name": "Attach to Process",
-            "type": "go",
-            "request": "attach",
-            "mode": "local",
-            "processId": 0
-        },
-        {
-            "name": "Launch Apex Debugger",
-            "type": "apex",
-            "request": "launch",
-            "userIdFilter": [],
-            "requestTypeFilter": [],
-            "entryPointFilter": "",
-            "salesforceProject": "${workspaceRoot}"
-        },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach"
-        },
-        {
-            "name": "PlatformIO Debugger",
-            "request": "launch",
-            "type": "platformio-debug",
-            "toolchainBinDir": "/usr/local/bin",
-            "executable": "${workspaceFolder}/.pio/build/your_board/firmware.elf"
-        }
+        // ... rest of your existing configurations ...
     ]
 }

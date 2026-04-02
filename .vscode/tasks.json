@@ -25,6 +25,42 @@
                     "message": 5
                 }
             }
+        },
+        {
+            "label": "build-intentkernel-mingw",
+            "type": "shell",
+            "command": "${workspaceFolder}/build_mingw.bat",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "run-intentkernel",
+            "type": "shell",
+            "command": "${workspaceFolder}/test_harness.exe",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "dependsOn": "build-intentkernel"
         }
     ]
 }
