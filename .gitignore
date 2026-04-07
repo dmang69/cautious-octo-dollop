@@ -1,26 +1,77 @@
-# Build artifacts
+# Build output
+build/
+out/
+dist/
+tmp/
+
+# Compiled objects / binaries
 *.o
-*.so
+*.obj
 *.a
+*.lib
+*.so
+*.dll
 *.exe
 *.out
+*.bin
+*.img
+*.iso
+*.elf
+*.map
 
-# IDE
+# Debug / symbols
+*.pdb
+*.dSYM/
+
+# Logs
+*.log
+
+# Archives
+*.zip
+*.7z
+*.tar
+*.gz
+*.tar.gz
+
+# IDE/editor
 .vscode/
 .idea/
+*.code-workspace
 *.swp
 *.swo
 *~
 
-# OS files
+# OS junk
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Archives
-*.zip
-*.tar.gz
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
 
-# Temporary
-tmp/
-build/
+# Node
+node_modules/
+
+# VMware
+*.vmdk
+*.vmem
+*.vmsd
+*.vmsn
+*.vmss
+*.nvram
+*.vmx
+*.vmxf
+*.lck/
+*.scoreboard
+vmware.log
+mksSandbox.log
+
+# QEMU / emulator disks
+*.qcow2
+
+# Temporary files
+*.tmp
+*.bak
