@@ -16,7 +16,7 @@ all: kernel test_harness
 
 KERNEL_OBJS = src/arch/x86_64/boot/boot.o src/kernel/init/main.o
 
-src/arch/x86_64/boot/boot.o: src/arch/x86_64/boot/boot.S
+src/arch/x86_64/boot/boot.o: src/arch/x86_64/boot/boot.asm
 	$(AS) $(ASFLAGS) -o $@ $<
 
 src/kernel/init/main.o: src/kernel/init/main.c
