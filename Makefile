@@ -14,12 +14,15 @@ INCLUDES = -Isrc
 # Main targets
 all: kernel test_harness
 
-KERNEL_OBJS = src/arch/x86_64/boot/boot.o src/kernel/init/main.o
+KERNEL_OBJS = src/arch/x86_64/boot/boot.o src/kernel/console/console.o src/kernel/init/main.o
 
 src/arch/x86_64/boot/boot.o: src/arch/x86_64/boot/boot.asm
 	$(AS) $(ASFLAGS) -o $@ $<
 
 src/kernel/init/main.o: src/kernel/init/main.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+
+src/kernel/console/console.o: src/kernel/console/console.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
 kernel: $(KERNEL_OBJS)
@@ -45,6 +48,6 @@ run: kernel
 
 # Clean build artifacts
 clean:
-	rm -f test_harness *.o *.elf *.bin *.iso src/arch/x86_64/boot/*.o src/kernel/init/*.o
+	rm -f test_harness *.o *.elf *.bin *.iso src/arch/x86_64/boot/*.o src/kernel/init/*.o src/kernel/console/*.o
 
 .PHONY: all debug clean kernel run
