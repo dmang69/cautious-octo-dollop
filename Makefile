@@ -14,8 +14,17 @@ INCLUDES = -Isrc
 # Main targets
 all: kernel test_harness
 
-kernel:
-	@echo "Placeholder: x86_64 kernel build rules will go here."
+KERNEL_OBJS = src/arch/x86_64/boot/boot.o src/kernel/init/main.o
+
+src/arch/x86_64/boot/boot.o: src/arch/x86_64/boot/boot.S
+	$(AS) $(ASFLAGS) -o $@ $<
+
+src/kernel/init/main.o: src/kernel/init/main.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+
+kernel: $(KERNEL_OBJS)
+	$(CC) -T src/arch/x86_64/linker.ld -o IntentKernel.bin -ffreestanding -O2 -nostdlib $(KERNEL_OBJS) -lgcc
+	@echo "Kernel built successfully as IntentKernel.bin"
 
 # Debug build
 debug: HOST_CFLAGS += $(DEBUG_FLAGS)
@@ -32,10 +41,10 @@ test_harness: src/test_harness.c capability_core.o
 
 # Emulation
 run: kernel
-	qemu-system-x86_64 -m 512M
+	qemu-system-x86_64 -m 512M -kernel IntentKernel.bin
 
 # Clean build artifacts
 clean:
-	rm -f test_harness *.o *.elf *.bin *.iso
+	rm -f test_harness *.o *.elf *.bin *.iso src/arch/x86_64/boot/*.o src/kernel/init/*.o
 
 .PHONY: all debug clean kernel run
