@@ -1,0 +1,26 @@
+# Build artifacts
+*.o
+*.so
+*.a
+*.exe
+*.out
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archives
+*.zip
+*.tar.gz
+
+# Temporary
+tmp/
+build/
