@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use IntentKernel, please cite:"
+title: "IntentKernel: Intent-Verified Capability Architecture with Quaternary Computing Subsystem"
+authors:
+  - family-names: Owings
+    given-names: Daniel Kirk
+    alias: Yoda
+    affiliation: M13THCO Research Division
+    city: Kamloops
+    country: CA
+doi: 10.5281/zenodo.19332771
+url: https://github.com/dmang69/intentkernel-architecture
+license: MIT
+version: "0.2.0-qalu"
+date-released: "2026-05-30"
+keywords:
+  - capability-based security
+  - quaternary computing
+  - multi-valued logic
+  - GF(4) error correction
+  - microkernel
+  - post-quantum cryptography
