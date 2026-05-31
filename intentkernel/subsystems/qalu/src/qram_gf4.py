@@ -64,7 +64,7 @@ def run_tests():
                 corrupted[position] = gf4_add(corrupted[position], error)
                 decoded, distance = decode(corrupted, codebook)
                 assert decoded == list(message[1])
-                assert distance <= 1
+                assert distance == 1
                 cases += 1
 
     print(f"[Q-RAM] Verified {cases} single-symbol corrections.")

@@ -9,6 +9,9 @@ on:
     paths:
       - 'intentkernel/subsystems/qalu/**'
 
+permissions:
+  contents: read
+
 jobs:
   verify-quaternary-subsystem:
     name: 77k+ assertion verification
