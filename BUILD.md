@@ -54,3 +54,12 @@ make clean
 - C compiler (gcc recommended)
 - POSIX-compliant system (Linux, macOS, or Windows with MinGW/Cygwin)
 - make utility
+
+## CRASS OS Framework
+
+This repository also includes a CRASS OS deployment framework in `crass_os/`.
+Use the installer scaffold and migration tooling as a foundation for the universal installer.
+
+```bash
+python3 crass_os/installer/crass_launch.py --mode scan
+```

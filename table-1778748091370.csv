@@ -1,0 +1,5 @@
+﻿Platform,C Daemons,Python IK-MOS
+**Linux**,Unix domain sockets (`/tmp/intentkernel/ch_N`),Unix domain sockets
+**macOS**,Unix domain sockets,Unix domain sockets
+**Windows**,Named pipes (`\\.\pipe\intentkernel\ch_N`),TCP loopback (`127.0.0.1`)
+**Android**,Unix domain sockets,Unix domain sockets

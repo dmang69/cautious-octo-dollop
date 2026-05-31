@@ -181,6 +181,36 @@ intentkernel/
 | **v1.4** | Months 10-18 | Full SDK release + mobile integration |
 | **v2.0** | Year 2+ | Native hardware specification + SoC integration |
 
+## Quaternary Computing Subsystem (Q-ALU)
+
+IntentKernel includes an experimental quaternary (base-4) computing subsystem under `subsystems/qalu/`.
+This implements a complete post-binary computing stack:
+
+| Component | Description | Status |
+|---|---|---|
+| Q-ALU | 11-operation quaternary arithmetic unit | ✅ 65,536 tests passing |
+| Q-RAM | Memristor memory model with GF(4) ECC | ✅ 960 error tests passing |
+| QCPU | Full fetch-decode-execute simulation | ✅ 6 programs verified |
+| Verilog RTL | Synthesizable Q-ALU with testbench | ✅ |
+
+**Key results:**
+- 2× wire count reduction vs binary buses
+- 2.67× total switching activity reduction
+- GF(4) [5,3] code corrects any single-symbol level-shift error
+
+Published: Zenodo DOI 10.5281/zenodo.19332771
+Thesis: *Beyond Binary — Architectures of the Fourth State*
+
+## CRASS OS Deployment Framework
+
+The repository includes an experimental CRASS OS deployment framework in `crass_os/`.
+It provides a simple cross-platform installer scaffold, migration tooling, and updater engine for future CRASS OS packages.
+
+- `crass_os/installer/crass_launch.py`
+- `crass_os/migration/crass_migrate.py`
+- `crass_os/updater/crass_core_updater.py`
+- `crass_os/docs/crass_installation_spec.md`
+
 ## License
 
 This architecture is released under the [Apache License 2.0](LICENSE). This ensures attribution while allowing commercial adoption and preventing patent aggression.

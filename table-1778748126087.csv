@@ -1,0 +1,10 @@
+﻿Component,Plan Requirement,Status,Location
+**10 C headers**,"Core types, IPC, caps, PQC, CBOR, SHA3, Merkle",**10 built**,`include/*.h`
+**8 shared libraries**,"IPC, caps, PQC, CBOR, quantum, SHA3, Merkle, ML",**9 built** (+ migrate + manifest),`lib/*.c`
+**Kernel simulator**,"Dispatcher, Filter VM, Scheduler",**4 C files**,`kernel/`
+**10 daemons**,"capd, intentd, leasebroker, eventscope, wasm\_runtime, quantumd, qsimd, qjobd, qproofd, ai\_core",**6 in core** + migrated,`user/`
+**Python shell (IK-MOS)**,"Kernel loop, parser, router, CLI, plugins",**22 Python files**,`ikmos/`
+**Test harness**,"Adversarial test suite, metrics",**2 harnesses** (security + migration),`tests/`
+**Migration tool**,CLI for backup/restore,**1 tool**,`tools/`
+**Build system**,"Makefiles, scripts",**3 Makefiles + 3 scripts**,`Makefile`
+**Documentation**,"README, ARCHITECTURE, thesis refs",**5 docs**,`docs/`

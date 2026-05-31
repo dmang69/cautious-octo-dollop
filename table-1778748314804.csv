@@ -1,0 +1,11 @@
+﻿Daemon,Purpose
+**capd**,Capability token issue/verify/revoke with PQC signing
+**intentd**,Intent classification via pattern matching + neural network
+**leasebroker**,Time-bounded capability leases
+**eventscope**,"Anomaly detection (Shannon entropy), Quantum Sentinel, emergent repair"
+**wasm\_runtime**,Tiny WASM interpreter with capability-gated host calls
+**ai\_core**,NIST AI RMF risk classification (CAT1-CAT4)
+**quantumd**,Quantum backend manager + QASM parser
+**qsimd**,Statevector quantum circuit simulator (2-8 qubits)
+**qjobd**,Quantum job scheduler with FIFO queue
+**qproofd**,PQC result signing + Merkle proof generation

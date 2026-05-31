@@ -1,0 +1,12 @@
+﻿Feature,v0.3,v0.4,v0.5,v0.6,**v0.7**
+Capability security,✓,✓,✓,✓,✓
+PQC (liboqs-ready),✓,✓,✓,✓,✓
+WASM sandbox,✓,✓,✓,✓,✓
+Migration system,,✓,✓,✓,✓
+Bloatware exclusion,,✓,✓,✓,✓
+Cross-platform,,,,✓ (4),✓
+CMake build,,,,✓,✓
+**Benchmark suite**,,,,,**✓**
+**Fuzzing harness**,,,,,**✓**
+**Package manager**,,,,,**✓**
+**Security dashboard**,,,,,**✓**

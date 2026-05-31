@@ -1,0 +1,11 @@
+﻿Test,Result,Detail
+TokenForgery,**PASS**,100/100 denials
+SyscallAbuse,**PASS**,100/100 denials
+ExpiredToken,**PASS**,200/200 denials
+SignatureTamper,**PASS**,Valid + tamper-detect + wrong-key
+IPCInjection,**PASS**,100/100 denials
+QuantumBell,**SKIPPED**,Simulator in optional/
+PatternClassify,**PASS**,7/7 correct
+MerkleProof,**PASS**,Verify + tamper rejection
+PQCKeypair,**PASS**,"10/10 keypairs, 0 collisions"
+PQCAlgInfo,**PASS**,"Alg name, sig size, pk size"

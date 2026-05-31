@@ -1,0 +1,9 @@
+﻿Metric,Count
+Total source files,**89**
+C headers,9
+C library files,8
+C daemon files,31
+Kernel files,6
+Python files,19
+Test/docs/scripts,16
+Archive,`intentkernel-v0.3.tar.gz` (82KB)

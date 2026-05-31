@@ -1,0 +1,10 @@
+﻿Function,POSIX (Linux/macOS/Android),Windows
+`ik_getpid()`,`getpid()`,`GetCurrentProcessId()`
+`ik_now_ms()`,`clock_gettime()`,`GetTickCount64()`
+`ik_now_us()`,`gettimeofday()`,`QueryPerformanceCounter()`
+`ik_sleep_ms()`,`nanosleep()`,`Sleep()`
+`ik_temp_dir()`,`$TMPDIR` / `/tmp`,`GetTempPathA()`
+`ik_mkdir_p()`,`mkdir()` recursively,`CreateDirectoryA()`
+`ik_install_shutdown_handler()`,`sigaction(SIGINT/TERM)`,`SetConsoleCtrlHandler()`
+`ik_is_shutdown_requested()`,volatile + signal,volatile + Ctrl event
+`ik_set_console_title()`,ANSI escape,`SetConsoleTitleA()`

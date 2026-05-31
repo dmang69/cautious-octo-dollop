@@ -1,0 +1,9 @@
+﻿Artifact,Location
+**Source archive**,"`intentkernel-v0.5.tar.gz` (83KB, 107 files)"
+**Test harness**,"`tests/test_harness` (10 tests, 0 escapes)"
+**Migration tool**,`tools/intentkernel-migrate` (7 subcommands)
+**Interactive kernel**,`kernel/kernel` (ik> prompt)
+**Python shell**,`ikmos/main.py` (IK-MOS with migrate commands)
+**Metrics CSV**,`tests/metrics.csv`
+**Documentation**,"`README.md`, `docs/*.md` (5 files)"
+**Citation**,`CITATION.cff` (Zenodo-ready)
