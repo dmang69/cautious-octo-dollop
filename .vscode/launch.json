@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "IntentKernel (MSVC)",
             "type": "cppvsdbg",
@@ -25,15 +26,15 @@
             "externalConsole": true,
             "MIMode": "gdb",
             "miDebuggerPath": "gdb.exe",
-            "setupCommands": [
-                {
+            "setupCommands": [],
+        }
+        {
                     "description": "Enable pretty-printing for gdb",
                     "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "build-intentkernel-mingw"
-        },
+                    "ignoreFailures": "true",
+        }            
+                    "preLaunchTask": "build-intentkernel-mingw",
+        }
         // ... rest of your existing configurations ...
     ]
 }
