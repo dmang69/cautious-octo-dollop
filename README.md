@@ -161,6 +161,8 @@ intentkernel/
 │   ├── ikrl_spec.md                   # IntentKernel Relief Layer (compatibility)
 │   ├── ibp_spec.md                    # Intent Broker Protocol specification
 │   └── token_rfc.md                   # RFC-INTENT-001: Capability Token Wire Format
+│   ├── mvp_scope.md                   # MVP scope + success criteria
+│   └── implementation_checklist.md    # Acceptance checklist
 ├── src/
 │   └── reference/
 │       └── capability_core.c          # Reference microkernel capability logic
@@ -192,3 +194,11 @@ This architecture is released under the [Apache License 2.0](LICENSE). This ensu
 ---
 
 *IntentKernel demonstrates that security, usability, and performance are not tradeoffs — they are artifacts of a single bad design decision made in 1969. This is a complete reset of the foundation of all computing.*
+
+## MVP Demo (IntentOS Control Surface + SDK)
+
+```bash
+cd platform
+pip install -r requirements.txt
+python demo/sdk_demo.py
+```
