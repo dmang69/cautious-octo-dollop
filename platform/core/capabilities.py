@@ -84,8 +84,8 @@ def validate_and_consume(presented: Capability) -> tuple[bool, str]:
         if not hmac.compare_digest(stored.key, presented.key):
             return False, "invalid_key"
         stored.uses_left -= 1
-        if stored.uses_left <= 0:
-            _cap_table.pop(stored.cap_id, None)
+        if stored.uses_left < 0:
+            stored.uses_left = 0
         return True, "ok"
 
 

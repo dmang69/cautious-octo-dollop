@@ -42,9 +42,11 @@ def schedule_notification(message: str, token: dict[str, Any]) -> dict[str, Any]
 
 def create_capability(cap_type: str, intent: dict[str, Any],
                       ttl_ms: int | None = None, uses: int | None = None,
-                      metadata: dict[str, Any] | None = None) -> dict[str, Any]:
+                      metadata: dict[str, Any] | None = None,
+                      publish: bool = True) -> dict[str, Any]:
     token = broker.request_capability(intent=intent, cap_type=cap_type,
-                                      ttl_ms=ttl_ms, uses=uses, metadata=metadata)
+                                      ttl_ms=ttl_ms, uses=uses, metadata=metadata,
+                                      publish=publish)
     return token.to_dict()
 
 
