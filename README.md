@@ -147,7 +147,7 @@ Every application, for every device class, is built using only these 9 functions
 
 The reference microkernel implementation is available at [`src/reference/capability_core.c`](src/reference/capability_core.c).
 
-## Repository Structure
+## Repository Structure (current + planned)
 
 ```
 intentkernel/
@@ -161,9 +161,23 @@ intentkernel/
 │   ├── ikrl_spec.md                   # IntentKernel Relief Layer (compatibility)
 │   ├── ibp_spec.md                    # Intent Broker Protocol specification
 │   └── token_rfc.md                   # RFC-INTENT-001: Capability Token Wire Format
+│   ├── mvp_scope.md                   # MVP scope + success criteria
+│   └── implementation_checklist.md    # Acceptance checklist
+├── platform/                          # MVP control surface + broker/eventscope + demo
+│   ├── api/
+│   ├── core/
+│   ├── ui/
+│   ├── tests/
+│   └── demo/
+├── sdk/                               # Language SDKs (planned)
+│   ├── rust/
+│   ├── c/
+│   └── python/
 ├── src/
-│   └── reference/
-│       └── capability_core.c          # Reference microkernel capability logic
+│   ├── reference/                     # Reference microkernel capability logic
+│   └── kernel/                        # Native kernel implementation (planned)
+├── tests/                             # Cross-component integration tests (planned)
+├── tools/                             # Build/CI utilities (planned)
 ├── roadmap/
 │   └── implementation_plan.md         # Phased development timeline
 └── governance/
@@ -192,3 +206,11 @@ This architecture is released under the [Apache License 2.0](LICENSE). This ensu
 ---
 
 *IntentKernel demonstrates that security, usability, and performance are not tradeoffs — they are artifacts of a single bad design decision made in 1969. This is a complete reset of the foundation of all computing.*
+
+## MVP Demo (IntentOS Control Surface + SDK)
+
+```bash
+cd platform
+pip install -r requirements.txt
+python demo/sdk_demo.py
+```

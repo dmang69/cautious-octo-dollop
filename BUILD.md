@@ -26,6 +26,22 @@ This will demonstrate:
    Observing how single-use abilities are automatically revoked
    Manually revoking capabilities
 
+## Running the IntentOS SDK Demo
+
+```bash
+cd platform
+pip install -r requirements.txt
+python demo/sdk_demo.py
+```
+
+This exercises the 9 primitive APIs against the in-memory broker/eventscope MVP.
+
+## Running Platform Tests
+
+```bash
+python -m unittest discover -s platform/tests
+```
+
 ## Debugging
 
 To build with debug symbols:

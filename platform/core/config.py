@@ -73,6 +73,24 @@ DEFAULTS: dict = {
         "breakpoints": [],
         "sandbox_mode": False,
     },
+
+    "intent_broker": {
+        "default_ttl_ms": 5000,
+        "max_ttl_ms": 60000,
+        "default_uses": 1,
+        "queue_size": 128,
+    },
+
+    "crypto": {
+        "mode": "pqc_simulated",
+        "algorithm": "SIM-ML-DSA-87",
+        "key_id": None,
+    },
+
+    "runtime": {
+        "platform": "auto",
+        "adapter_override": None,
+    },
 }
 
 # Hard safety rules — keys that can NEVER be changed
