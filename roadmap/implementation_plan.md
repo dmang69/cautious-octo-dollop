@@ -1,81 +1,38 @@
 # IntentKernel Implementation Plan
 
-## Phase 1: Proof of Concept (Months 1-3)
+## Phase 0 - Specification Baseline (Current)
 
-### Objective
-Demonstrate ransomware immunity on a standard Windows/Linux system.
+- Consolidate architecture docs, threat model, invariants, protocol drafts, and governance.
+- Align terminology across IntentKernel, UCCS, IKRL, and IBPS.
+- Define measurable acceptance criteria for reference demos.
 
-### Deliverables
-- **intentd** reference implementation for Linux (userspace + SGX)
-- **eventscope** interception library for C/Python
-- **capd** token issuer using ML-DSA-87 (via liboqs)
-- Live demonstration: ransomware binary runs inside IKRL, attempts file encryption, achieves 0 bytes encrypted
+## Phase 1 - Narrow MVP (Near Term)
 
-### Technical Milestones
-| Week | Milestone |
-|------|-----------|
-| 1 | CBOR encoding/decoding library (TinyCBOR integration) |
-| 2 | PQ crypto integration (liboqs ML-DSA-87 signing/verification) |
-| 3 | capd prototype — issues tokens using RFC-INTENT-001 format |
-| 4 | eventscope shim — intercepts syscalls, presents tokens to kernel |
-| 5 | Ransomware immunity demo — WannaCry in IKRL, 0 bytes encrypted |
-| 6 | Documentation and test suite |
+Goal: demonstrate constrained file/network access with event-scoped capabilities.
 
-## Phase 2: IKRL Integration (Months 4-9)
+- Minimal broker services (`intentd`, `capd`, `leasebroker`, `eventscope`) in development mode.
+- Interceptor prototype for two operations:
+  - one scoped file read/write path
+  - one scoped outbound network request
+- Demo scenarios:
+  - authorized operation succeeds with valid one-shot token
+  - unauthorized operation fails without token
+  - token replay and expired token are rejected
 
-### Objective
-Deploy IKRL as a production security layer on enterprise infrastructure.
+## Phase 2 - Reference Implementation Hardening
 
-### Deliverables
-- **Windows:** VBS-based broker service with Hyper-V micro-VM isolation
-- **Linux:** LSM module + eBPF hooks for kernel-level token validation
-- **Android:** Privileged system service via Device Owner enrollment
-- IKRL management console for enterprise fleet administration
-- Background lease dashboard for user visibility
+- Replace educational skeletons with tested components.
+- Add deterministic token serialization + signature verification path.
+- Expand audit events and revocation propagation behavior.
+- Add platform test harnesses for lifecycle transitions.
 
-### Deployment Model
-- Month 4-5: Pilot on isolated network segment (finance/HR systems)
-- Month 6-7: Critical infrastructure rollout (all sensitive data endpoints)
-- Month 8-9: General workforce deployment, retire legacy AV/EDR
+## Phase 3 - Compatibility Layers
 
-## Phase 3: SDK and Ecosystem (Months 10-18)
+- Implement staged integration adapters for Windows, Linux, Android, macOS, and selected embedded targets.
+- Publish deployment profiles documenting enforcement coverage and assumptions.
 
-### Objective
-Enable third-party development of native IntentKernel applications.
+## Phase 4 - Demos and External Validation
 
-### Deliverables
-- Full SDK release (Rust, C, Python bindings)
-- Developer documentation and tutorials
-- App manifest specification
-- IKRL simulator for testing capability flows
-- Mobile SDK for Android integration
-- Native kernel alpha release
-
-## Phase 4: Native Hardware (Year 2+)
-
-### Objective
-Transition from compatibility layer to bare-metal execution.
-
-### Deliverables
-- IntentKernel microkernel for ARM and RISC-V
-- SoC reference design with hardware capability enforcement
-- Embedded firmware SDK (ESP32, STM32, Raspberry Pi)
-- Vehicle/industrial controller firmware
-- Cloud hypervisor replacement
-
-### Hardware Partnership Targets
-- RISC-V vendors (SiFive, StarFive) for capability-aware silicon
-- CHERI-enabled processors for hardware-enforced memory safety
-- TPM/HSM vendors for hardware-backed broker key storage
-
-## Success Metrics
-
-| Metric | Target |
-|--------|--------|
-| Ransomware samples blocked | 100% (structural) |
-| Malware detection rate (Sentinel AI) | >99.9% |
-| Token validation latency | <1ms |
-| Background lease overhead | <2% CPU |
-| TCB size | <25,000 LOC |
-| Cold boot time (native) | <2 seconds |
-| Idle battery improvement | >3x over Android/iOS |
+- Publish end-to-end demos for one-shot email send and constrained egress.
+- Run independent review of threat model and protocol invariants.
+- Track defects against security property claims before broadening guarantees.
