@@ -50,8 +50,8 @@ def create_capability(cap_type: str, ttl_ms: int, uses: int,
     expires_at = issued_at + (ttl_ms / 1000.0)
     cap_id = secrets.token_hex(8)
     uses_val = int(uses)
-    if uses_val < 1:
-        raise ValueError("Capability uses must be >= 1")
+    if uses_val <= 0:
+        raise ValueError("Capability uses must be > 0")
     cap = Capability(
         cap_id=cap_id,
         cap_type=cap_type,

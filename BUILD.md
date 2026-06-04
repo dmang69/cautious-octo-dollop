@@ -36,6 +36,12 @@ python demo/sdk_demo.py
 
 This exercises the 9 primitive APIs against the in-memory broker/eventscope MVP.
 
+## Running Platform Tests
+
+```bash
+python -m unittest discover -s platform/tests
+```
+
 ## Debugging
 
 To build with debug symbols:
