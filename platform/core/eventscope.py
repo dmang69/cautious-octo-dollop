@@ -29,8 +29,10 @@ class AuthorizationResult:
 
 
 def authorize(token: dict[str, Any], action: str, resource: dict[str, Any] | None = None) -> AuthorizationResult:
-    cap_data = token.get("capability") if isinstance(token, dict) else None
-    sig_data = token.get("signature") if isinstance(token, dict) else None
+    if not isinstance(token, dict):
+        return AuthorizationResult(False, "invalid_token")
+    cap_data = token.get("capability")
+    sig_data = token.get("signature")
     if not cap_data or not sig_data:
         return AuthorizationResult(False, "invalid_token")
     cap = capabilities.Capability(
