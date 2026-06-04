@@ -147,7 +147,7 @@ Every application, for every device class, is built using only these 9 functions
 
 The reference microkernel implementation is available at [`src/reference/capability_core.c`](src/reference/capability_core.c).
 
-## Repository Structure
+## Repository Structure (current + planned)
 
 ```
 intentkernel/
@@ -163,9 +163,21 @@ intentkernel/
 │   └── token_rfc.md                   # RFC-INTENT-001: Capability Token Wire Format
 │   ├── mvp_scope.md                   # MVP scope + success criteria
 │   └── implementation_checklist.md    # Acceptance checklist
+├── platform/                          # MVP control surface + broker/eventscope + demo
+│   ├── api/
+│   ├── core/
+│   ├── ui/
+│   ├── tests/
+│   └── demo/
+├── sdk/                               # Language SDKs (planned)
+│   ├── rust/
+│   ├── c/
+│   └── python/
 ├── src/
-│   └── reference/
-│       └── capability_core.c          # Reference microkernel capability logic
+│   ├── reference/                     # Reference microkernel capability logic
+│   └── kernel/                        # Native kernel implementation (planned)
+├── tests/                             # Cross-component integration tests (planned)
+├── tools/                             # Build/CI utilities (planned)
 ├── roadmap/
 │   └── implementation_plan.md         # Phased development timeline
 └── governance/

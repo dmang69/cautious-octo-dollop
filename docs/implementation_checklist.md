@@ -1,5 +1,36 @@
 ## IntentKernel Implementation Checklist (Acceptance Tests)
 
+## Definition of Done (per component)
+
+### MVP (overall)
+- Broker/eventscope/SDK/control surface demo proves single-use and TTL enforcement.
+- Acceptance checklist items pass and the demo run is reproducible.
+
+### Broker (capd/intentd/leasebroker)
+- Issues signed tokens with TTL/uses; validates and revokes capabilities.
+- API endpoints expose request/consume/invoke flows and audit logs.
+
+### Eventscope
+- Action → capability mapping enforced; missing or malformed tokens denied.
+- Authorization decisions logged with resource metadata.
+
+### SDK (9 primitives)
+- Each API requires correct capability; create/invoke flows through broker/eventscope.
+- Errors are deterministic and surfaced to callers.
+
+### UI / Control Surface
+- Config endpoints and capability request/next/invoke flows are accessible.
+- UI/demos show token lifecycle and authorization results.
+
+### Tests
+- Unit tests cover broker/eventscope/SDK mappings.
+- Integration test validates demo single-use + TTL behavior.
+- Test command documented and passing.
+
+### Kernel Reference
+- Reference capability core compiles and demonstrates validation/consumption.
+- Interfaces are clear for future native microkernel integration.
+
 ### Intent Broker + Capability Lifecycle
 - [ ] Issue a capability token with bounded TTL and use count.
 - [ ] Validate signature and reject tampered tokens.
