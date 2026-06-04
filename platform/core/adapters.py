@@ -58,7 +58,7 @@ ADAPTERS: dict[str, Adapter] = {
     ),
     "embedded": Adapter(
         name="embedded",
-        description="Firmware supervisor + UCCS adapter",
+        description="Firmware supervisor + Universal Capability Computing Substrate adapter",
         status="planned",
         supported_actions=["resource", "network_request"],
     ),
