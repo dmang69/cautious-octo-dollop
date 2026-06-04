@@ -6,6 +6,7 @@
  */
 
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 
 typedef struct {
@@ -27,7 +28,7 @@ bool ik_validate_capability(const ik_capability_t *cap,
                             uint32_t requested_resource_id) {
     uint64_t now;
 
-    if (cap == 0) {
+    if (cap == NULL) {
         return false;
     }
 
@@ -53,7 +54,7 @@ bool ik_validate_capability(const ik_capability_t *cap,
 
 /* Consume one use on successful authorization. */
 bool ik_consume_capability(ik_capability_t *cap) {
-    if (cap == 0 || cap->remaining_uses == 0 || cap->revoked) {
+    if (cap == NULL || cap->remaining_uses == 0 || cap->revoked) {
         return false;
     }
 
@@ -63,7 +64,7 @@ bool ik_consume_capability(ik_capability_t *cap) {
 
 /* Explicit revocation helper. */
 void ik_revoke_capability(ik_capability_t *cap) {
-    if (cap != 0) {
+    if (cap != NULL) {
         cap->revoked = true;
         cap->remaining_uses = 0;
     }
