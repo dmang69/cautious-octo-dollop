@@ -6,26 +6,26 @@ SECTIONS
     . = 1M;
 
     /* Multiboot header must be early in the image. */
-    .text : ALIGN(4K)
+    .text BLOCK(4K) : ALIGN(4K)
     {
         *(.multiboot)
         *(.text)
     }
 
     /* Read-only data. */
-    .rodata : ALIGN(4K)
+    .rodata BLOCK(4K) : ALIGN(4K)
     {
         *(.rodata)
     }
 
     /* Read-write data (initialized) */
-    .data : ALIGN(4K)
+    .data BLOCK(4K) : ALIGN(4K)
     {
         *(.data)
     }
 
     /* Read-write data (uninitialized) and stack */
-    .bss : ALIGN(4K)
+    .bss BLOCK(4K) : ALIGN(4K)
     {
         *(COMMON)
         *(.bss)

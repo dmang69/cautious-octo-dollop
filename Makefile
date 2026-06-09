@@ -1,5 +1,10 @@
 # Target OS Compiler Setup
+# Use x86_64-elf-gcc if available (cross-compiler), otherwise fall back to host gcc
+ifneq ($(shell which x86_64-elf-gcc 2>/dev/null),)
 CC = x86_64-elf-gcc
+else
+CC = gcc
+endif
 AS = nasm
 CFLAGS = -ffreestanding -mno-red-zone -Wall -Wextra -pedantic -std=c11 -O2
 ASFLAGS = -f elf64
@@ -26,7 +31,7 @@ src/kernel/console/console.o: src/kernel/console/console.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
 kernel: $(KERNEL_OBJS)
-	$(CC) -T src/arch/x86_64/linker.ld -o IntentKernel.bin -ffreestanding -O2 -nostdlib $(KERNEL_OBJS) -lgcc
+	$(CC) -T src/arch/x86_64/linker.ld -o IntentKernel.bin -ffreestanding -O2 -nostdlib -no-pie $(KERNEL_OBJS) -lgcc
 	@echo "Kernel built successfully as IntentKernel.bin"
 
 # Debug build
