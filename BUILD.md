@@ -21,10 +21,10 @@ After building, you can run the test harness to see the capability system in act
 ```
 
 This will demonstrate:
-1. Creating capabilities with different types, TTLs, and use counts
-2. Validating capabilities
-3. Observing how single-use capabilities are automatically revoked
-4. Manually revoking capabilities
+   Creating capabilities with different types TTLs and use counts
+   Validating capabilities
+   Observing how single-use abilities are automatically revoked
+   Manually revoking capabilities
 
 ## Debugging
 
