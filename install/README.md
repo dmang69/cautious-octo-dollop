@@ -11,6 +11,7 @@ IntentOS IKRL (IntentKernel Relief Layer) is a non-destructive upgrade package t
 | Platform   | Package Type          | Min Version           | Install Time |
 |:-----------|:----------------------|:----------------------|:-------------|
 | Linux      | Shell + systemd       | Any modern distro     | ~2 minutes   |
+| macOS      | Shell + LaunchDaemon  | macOS 12 (Monterey)+  | ~3 minutes   |
 | Windows    | PowerShell installer  | Windows 10 / 11       | ~3 minutes   |
 | Android    | APK sideload          | Android 8.0 (API 26)  | ~1 minute    |
 | ChromeOS   | Chrome Extension      | Chrome 100+           | ~30 seconds  |
@@ -25,6 +26,12 @@ curl -fsSL https://raw.githubusercontent.com/intentos/install/main/linux/install
 # OR, offline:
 chmod +x install/linux/install.sh
 sudo bash install/linux/install.sh
+```
+
+### macOS (run with sudo)
+```bash
+chmod +x install/macos/install.sh
+sudo bash install/macos/install.sh
 ```
 
 ### Windows (PowerShell — run as Administrator)
@@ -74,6 +81,14 @@ IntentOS Upgrade Layer
 ### Linux
 ```bash
 sudo bash install/linux/uninstall.sh
+```
+
+### macOS
+```bash
+sudo launchctl unload /Library/LaunchDaemons/com.intentos.daemon.plist
+sudo rm -f /Library/LaunchDaemons/com.intentos.daemon.plist
+sudo rm -rf /opt/intentos /var/log/intentos /var/run/intentos
+sudo rm -f /usr/local/bin/intentos
 ```
 
 ### Windows
