@@ -1,7 +1,7 @@
 """
 IntentKernel Capability Token — RFC-INTENT-001 v0
 
-Token format (JSON-serialisable):
+Token format (JSON-serializable):
   {
     "id":             <uuid4 string>,
     "scope":          <string>,       # e.g. "network_request", "file_read"
@@ -146,7 +146,7 @@ class CapabilityToken:
         return True, "ok"
 
     # ------------------------------------------------------------------
-    # Serialisation
+    # Serialization
     # ------------------------------------------------------------------
 
     def to_dict(self) -> dict:

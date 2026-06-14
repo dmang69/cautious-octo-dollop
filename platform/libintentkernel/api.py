@@ -97,7 +97,7 @@ def _validate_token(token: CapabilityToken, consume: bool = True) -> bool:
 
 def _check_ip(ip: str, token: CapabilityToken) -> tuple[str, str]:
     """
-    Ask ip-descramblerd to analyse an IP.
+    Ask ip-descramblerd to analyze an IP.
     Returns (verdict, reason).
     On error, defaults to "allow" with a warning.
     """
