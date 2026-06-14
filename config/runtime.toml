@@ -1,0 +1,32 @@
+# AI OS Runtime Configuration
+# /etc/ai-os/runtime.toml
+
+[runtime]
+# Log level: trace, debug, info, warn, error
+log_level = "info"
+log_dir = "/var/log/ai-os"
+data_dir = "/var/lib/ai-os"
+
+[inference]
+# Directory containing ONNX model files
+model_dir = "/opt/ai-os/models"
+# Number of inference threads (0 = auto-detect from CPU count)
+num_threads = 0
+# Execution provider: cpu, cuda, tensorrt
+execution_provider = "cpu"
+# Inference timeout in milliseconds
+timeout_ms = 5000
+
+[kernel_interface]
+# Shared library path (resolved at runtime via ldconfig)
+lib_path = "/usr/local/lib/libkernel_interface.so"
+# Capability token expiry in seconds
+capability_ttl = 300
+
+[security]
+# Require capability tokens for all inference requests
+require_capabilities = true
+# Allow unsigned models (recommended: false for production)
+allow_unsigned_models = false
+# Maximum model file size in bytes (default 2 GB)
+max_model_size = 2147483648

@@ -1,0 +1,31 @@
+[Unit]
+Description=AI OS Context Manager — IntentKernel AI Runtime
+Documentation=https://github.com/dmang69/cautious-octo-dollop
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ai-os
+Group=ai-os
+WorkingDirectory=/opt/ai-os
+Environment="AI_OS_LOG_DIR=/var/log/ai-os"
+Environment="AI_OS_MODEL_DIR=/opt/ai-os/models"
+Environment="AI_OS_CONFIG=/etc/ai-os/runtime.toml"
+ExecStart=/usr/local/bin/ai-runtime --config /etc/ai-os/runtime.toml
+Restart=on-failure
+RestartSec=10
+StandardOutput=append:/var/log/ai-os/stdout.log
+StandardError=append:/var/log/ai-os/stderr.log
+LimitNOFILE=65536
+
+# Hardening
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log/ai-os /var/lib/ai-os
+ReadOnlyPaths=/opt/ai-os/models
+
+[Install]
+WantedBy=multi-user.target
