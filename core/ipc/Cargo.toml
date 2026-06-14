@@ -1,0 +1,17 @@
+[package]
+name = "ipc"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "gRPC services for inter-component communication"
+
+[dependencies]
+tokio = { workspace = true }
+tonic = { workspace = true }
+prost = { workspace = true }
+anyhow = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[build-dependencies]
+tonic-build = "0.11"

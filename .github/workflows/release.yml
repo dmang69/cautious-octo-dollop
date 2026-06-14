@@ -1,0 +1,97 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+  ORT_VERSION: "1.16.0"
+
+jobs:
+  # ── Build native installers per platform ────────────────────────────────────
+  build:
+    name: Build — ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact: ai-os-linux-x64
+            tauri-artifact: shell/tauri-app/src-tauri/target/release/bundle/deb/*.deb
+          - os: windows-latest
+            artifact: ai-os-windows-x64
+            tauri-artifact: shell/tauri-app/src-tauri/target/release/bundle/msi/*.msi
+          - os: macos-latest
+            artifact: ai-os-macos-x64
+            tauri-artifact: shell/tauri-app/src-tauri/target/release/bundle/dmg/*.dmg
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: shell/tauri-app/package-lock.json
+
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev \
+            libappindicator3-dev librsvg2-dev patchelf
+          wget -q https://github.com/microsoft/onnxruntime/releases/download/v${ORT_VERSION}/onnxruntime-linux-x64-${ORT_VERSION}.tgz
+          tar -xzf onnxruntime-linux-x64-${ORT_VERSION}.tgz
+          echo "ORT_LIB_LOCATION=$(pwd)/onnxruntime-linux-x64-${ORT_VERSION}/lib" >> $GITHUB_ENV
+
+      - name: Install macOS dependencies
+        if: runner.os == 'macOS'
+        run: |
+          wget -q https://github.com/microsoft/onnxruntime/releases/download/v${ORT_VERSION}/onnxruntime-osx-x86_64-${ORT_VERSION}.tgz
+          tar -xzf onnxruntime-osx-x86_64-${ORT_VERSION}.tgz
+          echo "ORT_LIB_LOCATION=$(pwd)/onnxruntime-osx-x86_64-${ORT_VERSION}/lib" >> $GITHUB_ENV
+
+      - name: Build core runtime
+        run: cargo build --workspace --release
+
+      - name: Build shell
+        working-directory: shell/tauri-app
+        run: |
+          npm ci
+          npm run tauri:build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.tauri-artifact }}
+
+  # ── Create GitHub Release ───────────────────────────────────────────────────
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-artifacts/**/*
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-rc') || contains(github.ref_name, '-beta') }}

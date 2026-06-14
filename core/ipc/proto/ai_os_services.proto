@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package ai_os;
+
+// ── Telemetry ─────────────────────────────────────────────────────────────────
+
+message TelemetrySnapshot {
+  uint64 timestamp_ms       = 1;
+  float  cpu_avg            = 2;
+  repeated float cpu_cores  = 3;
+  uint64 memory_used_bytes  = 4;
+  uint64 memory_total_bytes = 5;
+  uint32 process_count      = 6;
+}
+
+// ── Scheduler ─────────────────────────────────────────────────────────────────
+
+message PriorityRecommendation {
+  uint32 pid               = 1;
+  int32  suggested_priority = 2;
+  float  confidence        = 3;
+}
+
+message SchedulerRequest  { TelemetrySnapshot snapshot = 1; }
+message SchedulerResponse { repeated PriorityRecommendation recommendations = 1; }
+
+service SchedulerService {
+  rpc GetRecommendations(SchedulerRequest) returns (SchedulerResponse);
+  rpc StreamRecommendations(TelemetrySnapshot) returns (stream PriorityRecommendation);
+}
+
+// ── Command Interpreter ───────────────────────────────────────────────────────
+
+message CommandRequest  { string raw_command = 1; string context_json = 2; }
+message CommandResponse { string intent = 1; string structured_json = 2; float confidence = 3; }
+
+service CommandInterpreterService {
+  rpc Interpret(CommandRequest) returns (CommandResponse);
+}
+
+// ── Telemetry Stream ──────────────────────────────────────────────────────────
+
+message TelemetryRequest  {}
+
+service TelemetryService {
+  rpc StreamTelemetry(TelemetryRequest) returns (stream TelemetrySnapshot);
+  rpc GetSnapshot(TelemetryRequest) returns (TelemetrySnapshot);
+}

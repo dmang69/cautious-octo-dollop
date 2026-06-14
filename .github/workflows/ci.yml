@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  CARGO_TERM_COLOR: always
+  ORT_VERSION: "1.16.0"
+
+jobs:
+  # ── Rust Tests ──────────────────────────────────────────────────────────────
+  rust:
+    name: Rust — ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache Cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Download ONNX Runtime (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          wget -q https://github.com/microsoft/onnxruntime/releases/download/v${ORT_VERSION}/onnxruntime-linux-x64-${ORT_VERSION}.tgz
+          tar -xzf onnxruntime-linux-x64-${ORT_VERSION}.tgz
+          echo "ORT_LIB_LOCATION=$(pwd)/onnxruntime-linux-x64-${ORT_VERSION}/lib" >> $GITHUB_ENV
+
+      - name: Download ONNX Runtime (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          wget -q https://github.com/microsoft/onnxruntime/releases/download/v${ORT_VERSION}/onnxruntime-osx-x86_64-${ORT_VERSION}.tgz
+          tar -xzf onnxruntime-osx-x86_64-${ORT_VERSION}.tgz
+          echo "ORT_LIB_LOCATION=$(pwd)/onnxruntime-osx-x86_64-${ORT_VERSION}/lib" >> $GITHUB_ENV
+
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: Format check
+        run: cargo fmt --all -- --check
+
+      - name: Build
+        run: cargo build --workspace --release
+
+      - name: Test
+        run: cargo test --workspace --release
+
+  # ── Shell (Node) ────────────────────────────────────────────────────────────
+  shell:
+    name: Shell — ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: shell/tauri-app/package-lock.json
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev \
+            libappindicator3-dev librsvg2-dev patchelf
+
+      - name: npm ci
+        working-directory: shell/tauri-app
+        run: npm ci
+
+      - name: TypeScript check
+        working-directory: shell/tauri-app
+        run: npx tsc --noEmit
+
+      - name: Tauri build
+        working-directory: shell/tauri-app
+        run: npm run tauri:build

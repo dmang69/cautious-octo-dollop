@@ -1,0 +1,22 @@
+[package]
+name = "ai-runtime"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "AI Context Manager daemon — inference, telemetry, and scheduling"
+
+[[bin]]
+name = "ai-runtime"
+path = "src/main.rs"
+
+[dependencies]
+kernel-interface = { path = "../kernel-interface" }
+ipc = { path = "../ipc" }
+tokio = { workspace = true }
+anyhow = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+ort = { version = "1.16", features = ["load-dynamic"] }
+toml = "0.8"

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*"
+           Name="AI OS Context Manager"
+           Language="1033"
+           Version="0.1.0"
+           Manufacturer="AI OS Contributors"
+           UpgradeCode="7A3B1F2C-9D4E-4A1B-8C5F-2E7D9A0B3C4E">
+
+    <Package InstallerVersion="500" Compressed="yes" InstallScope="perMachine" />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="AI OS Context Manager" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="ServiceComponents" />
+    </Feature>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="INSTALLFOLDER" Name="AIOS">
+          <Directory Id="BINDIR" Name="bin" />
+        </Directory>
+      </Directory>
+      <Directory Id="CommonAppDataFolder">
+        <Directory Id="CONFIGDIR" Name="AIOS" />
+      </Directory>
+    </Directory>
+
+    <ComponentGroup Id="ProductComponents" Directory="BINDIR">
+      <Component Id="MainBinary" Guid="*">
+        <File Id="AiRuntimeExe" Source="..\..\core\ai-runtime\target\release\ai-runtime.exe" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="ServiceComponents" Directory="BINDIR">
+      <Component Id="WindowsService" Guid="*">
+        <File Id="ServiceExe" Source="service\AIContextService.exe" KeyPath="yes" />
+        <ServiceInstall Id="ServiceInstaller"
+                        Type="ownProcess"
+                        Name="AIContextManager"
+                        DisplayName="AI OS Context Manager"
+                        Description="Provides AI-driven process scheduling and system monitoring."
+                        Start="auto"
+                        Account="LocalSystem"
+                        ErrorControl="normal" />
+        <ServiceControl Id="StartService" Start="install" Stop="both" Remove="uninstall" Name="AIContextManager" Wait="yes" />
+      </Component>
+    </ComponentGroup>
+  </Product>
+</Wix>

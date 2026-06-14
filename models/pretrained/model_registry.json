@@ -1,0 +1,22 @@
+{
+  "models": [
+    {
+      "id": "scheduler_v1",
+      "filename": "scheduler_v1.onnx",
+      "description": "Process scheduler RL model — maps telemetry to priority adjustments",
+      "version": "1.0.0",
+      "input_shape": [1, 16],
+      "output_shape": [1, 1],
+      "sha256": ""
+    },
+    {
+      "id": "command_interpreter_v1",
+      "filename": "command_interpreter_v1.onnx",
+      "description": "NLP command interpreter — maps raw commands to structured intents",
+      "version": "1.0.0",
+      "input_shape": [1, 64],
+      "output_shape": [1, 32, 32128],
+      "sha256": ""
+    }
+  ]
+}

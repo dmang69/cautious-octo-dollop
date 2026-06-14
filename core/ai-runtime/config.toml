@@ -1,0 +1,18 @@
+// Runtime configuration (serialized from config.toml)
+[runtime]
+telemetry_interval_ms = 500
+inference_threads = 2
+model_dir = "models/pretrained"
+log_level = "info"
+
+[grpc]
+address = "127.0.0.1"
+port = 50051
+
+[scheduler]
+model_path = "scheduler_v1.onnx"
+enabled = true
+
+[command_interpreter]
+model_path = "command_interpreter_v1.onnx"
+enabled = true
