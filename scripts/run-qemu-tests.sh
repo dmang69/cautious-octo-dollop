@@ -14,6 +14,9 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
+# How long to wait (in seconds) after QEMU daemonizes before checking it is alive
+BOOT_WAIT_SECONDS=2
+
 echo -e "${BLUE}================================${NC}"
 echo -e "${BLUE}QEMU Test Infrastructure${NC}"
 echo -e "${BLUE}IntentKernel Capability OS${NC}"
@@ -71,7 +74,7 @@ echo -e "${BLUE}Test 2: Kernel Boot (QEMU)${NC}"
 echo -e "${BLUE}================================${NC}"
 echo -e "${YELLOW}Booting IntentKernel.bin in QEMU...${NC}"
 
-PIDFILE="/tmp/intentkernel-qemu.pid"
+PIDFILE="$(mktemp /tmp/intentkernel-qemu-XXXXXX.pid)"
 
 qemu-system-x86_64 \
     -m 512M \
@@ -81,11 +84,24 @@ qemu-system-x86_64 \
     -daemonize \
     -pidfile "$PIDFILE"
 
-QEMU_PID=$(cat "$PIDFILE")
+QEMU_PID=""
+for i in 1 2 3 4 5; do
+    if [ -s "$PIDFILE" ]; then
+        QEMU_PID=$(cat "$PIDFILE")
+        break
+    fi
+    sleep 0.5
+done
+
+if [ -z "$QEMU_PID" ]; then
+    echo -e "${RED}✗ QEMU did not write PID file in time${NC}"
+    rm -f "$PIDFILE"
+    exit 1
+fi
 echo -e "${GREEN}✓ QEMU started (PID: $QEMU_PID)${NC}"
 
-# Give the kernel a moment to boot, then check the process is still alive
-sleep 2
+# Wait for the kernel to boot, then verify the process is still alive
+sleep "$BOOT_WAIT_SECONDS"
 if kill -0 "$QEMU_PID" 2>/dev/null; then
     echo -e "${GREEN}✓ Kernel is running in QEMU${NC}"
 else
