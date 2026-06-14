@@ -1,3 +1,13 @@
-ci.yml
-deploy.yml
-lint.yml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: pwsh ./scripts/build.ps1
