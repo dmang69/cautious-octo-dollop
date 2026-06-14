@@ -1,3 +1,19 @@
-ci.yml
-deploy.yml
-lint.yml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y nasm gcc-x86-64-linux-gnu binutils-x86-64-linux-gnu
+
+      - name: Build test harness
+        run: make test_harness HOST_CC=gcc
