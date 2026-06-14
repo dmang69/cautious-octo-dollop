@@ -40,7 +40,7 @@ echo -e "${GREEN}✓ Node $(node --version)${NC}\n"
 
 # Build core components
 echo -e "${YELLOW}Building core AI runtime...${NC}"
-cd core/ai-runtime
+cd core/ai-runtime || { echo -e "${RED}Error: Directory core/ai-runtime not found${NC}"; exit 1; }
 cargo build --release
 echo -e "${GREEN}✓ AI runtime built${NC}\n"
 
@@ -48,7 +48,7 @@ cd ../..
 
 # Build kernel interface
 echo -e "${YELLOW}Building kernel interface...${NC}"
-cd core/kernel-interface
+cd core/kernel-interface || { echo -e "${RED}Error: Directory core/kernel-interface not found${NC}"; exit 1; }
 cargo build --release
 echo -e "${GREEN}✓ Kernel interface built${NC}\n"
 
@@ -56,7 +56,7 @@ cd ../..
 
 # Build gRPC services
 echo -e "${YELLOW}Building gRPC services...${NC}"
-cd core/ipc
+cd core/ipc || { echo -e "${RED}Error: Directory core/ipc not found${NC}"; exit 1; }
 cargo build --release
 echo -e "${GREEN}✓ gRPC services built${NC}\n"
 
@@ -64,7 +64,7 @@ cd ../..
 
 # Build Tauri shell
 echo -e "${YELLOW}Building Tauri shell...${NC}"
-cd shell/tauri-app
+cd shell/tauri-app || { echo -e "${RED}Error: Directory shell/tauri-app not found${NC}"; exit 1; }
 
 if [ ! -d "node_modules" ]; then
     echo -e "${YELLOW}Installing npm dependencies...${NC}"
