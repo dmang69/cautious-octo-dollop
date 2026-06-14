@@ -1,0 +1,21 @@
+{
+  "_comment": "IntentKernel IP threat database — v0 (sample data)",
+  "version": "1",
+  "description": "Local threat database used by ip-descramblerd when external APIs are unavailable.",
+  "blocked_ips": [
+    "0.0.0.0",
+    "255.255.255.255"
+  ],
+  "blocked_cidrs": [
+    "192.0.2.0/24",
+    "198.51.100.0/24",
+    "203.0.113.0/24"
+  ],
+  "suspicious_ips": [],
+  "notes": [
+    "192.0.2.0/24 — RFC 5737 TEST-NET-1 (used for documentation; should never appear in real traffic)",
+    "198.51.100.0/24 — RFC 5737 TEST-NET-2",
+    "203.0.113.0/24 — RFC 5737 TEST-NET-3",
+    "In production, augment with AbuseIPDB, Shodan, and VirusTotal feeds."
+  ]
+}

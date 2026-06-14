@@ -1,0 +1,37 @@
+{
+  "_comment": "IntentKernel capability issuance policy — v0",
+  "version": "1",
+  "default_deny": false,
+  "rules": [
+    {
+      "scope": "network_request",
+      "subject_pattern": "*",
+      "allowed": true,
+      "max_ttl": 300,
+      "max_uses": 1,
+      "description": "Any registered subject may request a one-shot network capability."
+    },
+    {
+      "scope": "network_inspect",
+      "subject_pattern": "intentd",
+      "allowed": true,
+      "max_ttl": 10,
+      "max_uses": 1,
+      "description": "intentd may mint a one-shot IP-inspection token on behalf of a network_request."
+    },
+    {
+      "scope": "file_read",
+      "subject_pattern": "*",
+      "allowed": true,
+      "max_ttl": 60,
+      "max_uses": 1,
+      "description": "Any subject may request a one-shot file-read capability."
+    },
+    {
+      "scope": "file_write",
+      "subject_pattern": "*",
+      "allowed": false,
+      "description": "File-write is not yet enforced in v0; all requests are rejected."
+    }
+  ]
+}
