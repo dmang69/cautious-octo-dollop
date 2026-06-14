@@ -22,7 +22,7 @@ fi
 # Build parser to WASM
 cd "$WASM_DIR"
 
-echo "🔧 Compiling parser.rs to WASM..."
+echo "🔧 Compiling intent parser to WASM..."
 cargo build --target wasm32-wasip1 --release
 
 # Copy WASM binary to kernel-interface

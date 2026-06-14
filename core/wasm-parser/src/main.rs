@@ -55,7 +55,7 @@ fn extract_string_field<'a>(json: &'a str, key: &str) -> Option<&'a str> {
 // Intent classification
 // ---------------------------------------------------------------------------
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 enum Intent {
     Run,
     Query,
@@ -135,14 +135,7 @@ fn classify(text: &str) -> ClassificationResult {
         }
         if score > best_score {
             best_score  = score;
-            best_intent = match intent {
-                Intent::Run       => Intent::Run,
-                Intent::Query     => Intent::Query,
-                Intent::Configure => Intent::Configure,
-                Intent::List      => Intent::List,
-                Intent::Help      => Intent::Help,
-                Intent::Unknown   => Intent::Unknown,
-            };
+            best_intent = intent.clone();
         }
     }
 
