@@ -138,7 +138,7 @@ def draw(content: Any) -> None:
     print(content)
 
 
-def wait_event(timeout: Optional[float] = None) -> Optional[dict]:
+def wait_event(timeout: Optional[float] = None) -> None:
     """
     API 2 — Block until an IntentKernel event arrives or timeout expires.
 
@@ -146,7 +146,6 @@ def wait_event(timeout: Optional[float] = None) -> Optional[dict]:
     Future: subscribes to the IK event bus.
     """
     time.sleep(timeout if timeout is not None else 0.1)
-    return None
 
 
 def get_resource(path: str, caps: Optional[list] = None) -> bytes:

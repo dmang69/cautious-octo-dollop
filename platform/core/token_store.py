@@ -55,6 +55,9 @@ class TokenStore:
                 return False, "token revoked"
 
             stored = self._tokens.get(token.id)
+            # Check the *store's* usage counter, not the incoming token's
+            # self-reported field — a caller could forge uses_remaining in the
+            # presented token even though the signature covers the original value.
             if stored is not None and stored.uses_remaining <= 0:
                 return False, "no uses remaining"
 

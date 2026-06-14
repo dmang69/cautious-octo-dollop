@@ -46,6 +46,7 @@ from core.token import CapabilityToken
 from ip_descramblerd.analyzer import analyze_ip
 
 log = logging.getLogger("ip-descramblerd")
+_start_time = time.time()
 
 # Where capd lives (overridable via env)
 _CAPD_URL = os.environ.get("INTENTOS_CAPD_URL", "http://127.0.0.1:5002")
@@ -82,8 +83,9 @@ def _validate_token_with_capd(token_dict: dict) -> tuple[bool, str]:
             token = CapabilityToken.from_dict(token_dict)
             ok, reason = token.is_valid(get_key())
             return ok, reason
-        except Exception as e2:
-            return False, f"local validation failed: {e2}"
+        except Exception:
+            log.debug("Local token validation error", exc_info=True)
+            return False, "local validation failed"
 
 
 @ip_descramblerd_bp.post("/analyze")
@@ -120,7 +122,7 @@ def status():
     return jsonify({
         "ok": True,
         "service": "ip-descramblerd",
-        "uptime": time.time(),
+        "uptime_seconds": round(time.time() - _start_time, 1),
         "capd_url": _CAPD_URL,
     })
 

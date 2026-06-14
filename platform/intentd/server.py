@@ -39,6 +39,7 @@ from core.token_store import TokenStore
 from intentd.policy import PolicyEngine
 
 log = logging.getLogger("intentd")
+_start_time = time.time()
 
 # ---------------------------------------------------------------------------
 # Shared state (module-level so the Flask app can reference it)
@@ -108,7 +109,7 @@ def status():
     return jsonify({
         "ok": True,
         "service": "intentd",
-        "uptime": time.time(),
+        "uptime_seconds": round(time.time() - _start_time, 1),
         "stats": _store.stats(),
     })
 

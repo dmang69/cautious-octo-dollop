@@ -47,7 +47,7 @@ def _build_http_request(host: str, path: str, port: int) -> bytes:
     """Construct a minimal HTTP/1.1 GET request."""
     lines = [
         f"GET {path or '/'} HTTP/1.1",
-        f"Host: {host}:{port}" if port not in (80, 443) else f"Host: {host}",
+        f"Host: {host}" if port == 80 else f"Host: {host}:{port}",
         "Connection: close",
         "User-Agent: secure_curl/0.1 (IntentKernel)",
         "Accept: */*",

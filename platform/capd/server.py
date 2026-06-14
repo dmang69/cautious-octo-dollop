@@ -37,6 +37,7 @@ from core.token import CapabilityToken, get_key
 from core.token_store import TokenStore
 
 log = logging.getLogger("capd")
+_start_time = time.time()
 
 _store = TokenStore()
 _gc_interval = 120  # seconds between garbage-collection passes
@@ -76,8 +77,9 @@ def validate():
 
     try:
         token = CapabilityToken.from_dict(token_data)
-    except (KeyError, TypeError, ValueError) as exc:
-        return _err(f"malformed token: {exc}")
+    except (KeyError, TypeError, ValueError):
+        log.debug("Received malformed token payload", exc_info=True)
+        return _err("malformed token: missing or invalid required field")
 
     consume = bool(data.get("consume", True))
 
@@ -113,7 +115,7 @@ def status():
     return jsonify({
         "ok": True,
         "service": "capd",
-        "uptime": time.time(),
+        "uptime_seconds": round(time.time() - _start_time, 1),
         "stats": _store.stats(),
     })
 
