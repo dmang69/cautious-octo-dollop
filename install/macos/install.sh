@@ -61,7 +61,7 @@ check_macos() {
 }
 
 check_existing() {
-    if launchctl list "${PLIST_LABEL}" &>/dev/null 2>&1; then
+    if launchctl list "${PLIST_LABEL}" &>/dev/null; then
         log_warn "IntentOS is already running.  Upgrading in place…"
         launchctl unload "${PLIST_FILE}" 2>/dev/null || true
     fi
@@ -87,7 +87,9 @@ install_dependencies() {
     fi
 
     BREW_USER="${SUDO_USER:-${USER}}"
-    su - "${BREW_USER}" -c "brew install python3 wget git 2>/dev/null || true"
+    if ! su - "${BREW_USER}" -c "brew install python3 wget git"; then
+        log_warn "Some Homebrew packages may not have installed correctly"
+    fi
 
     if ! command -v python3 &>/dev/null; then
         log_error "Python 3 installation failed.  Please install python3 manually."
@@ -112,11 +114,22 @@ install_app() {
         # Fetch from GitHub
         log_info "Downloading from GitHub…"
         if command -v git &>/dev/null; then
-            git clone --depth=1 "${REPO_URL}" /tmp/intentos-src 2>/dev/null || true
-            if [[ -d /tmp/intentos-src/platform ]]; then
-                cp -r /tmp/intentos-src/platform/. "${INTENTOS_HOME}/"
-                rm -rf /tmp/intentos-src
+            if git clone --depth=1 "${REPO_URL}" /tmp/intentos-src; then
+                if [[ -d /tmp/intentos-src/platform ]]; then
+                    cp -r /tmp/intentos-src/platform/. "${INTENTOS_HOME}/"
+                    rm -rf /tmp/intentos-src
+                else
+                    rm -rf /tmp/intentos-src
+                    log_error "Repository does not contain a 'platform' directory."
+                    exit 1
+                fi
+            else
+                log_error "Failed to clone repository from ${REPO_URL}"
+                exit 1
             fi
+        else
+            log_error "git is not installed and no local source found.  Cannot install application files."
+            exit 1
         fi
     fi
 
@@ -129,13 +142,13 @@ setup_venv() {
     log_step "Setting up Python virtual environment"
 
     python3 -m venv "${INTENTOS_VENV}"
-    "${INTENTOS_VENV}/bin/pip" install --upgrade pip -q
+    "${INTENTOS_VENV}/bin/pip" install --upgrade pip
 
     if [[ -f "${INTENTOS_HOME}/requirements.txt" ]]; then
-        "${INTENTOS_VENV}/bin/pip" install -r "${INTENTOS_HOME}/requirements.txt" -q
+        "${INTENTOS_VENV}/bin/pip" install -r "${INTENTOS_HOME}/requirements.txt"
         log_info "Python dependencies installed"
     else
-        "${INTENTOS_VENV}/bin/pip" install flask -q
+        "${INTENTOS_VENV}/bin/pip" install flask
         log_info "Core dependencies installed"
     fi
 }
@@ -193,7 +206,10 @@ install_service() {
 EOF
 
     chmod 644 "${PLIST_FILE}"
-    launchctl load "${PLIST_FILE}"
+    if ! launchctl load "${PLIST_FILE}"; then
+        log_error "Failed to load LaunchDaemon.  Check ${INTENTOS_LOG}/stderr.log for details."
+        exit 1
+    fi
     log_info "LaunchDaemon installed and started"
 }
 
