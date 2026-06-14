@@ -1,0 +1,8 @@
+[package]
+name = "intent_parser"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "intent_parser"
+path = "src/main.rs"
