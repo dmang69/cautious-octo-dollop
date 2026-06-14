@@ -61,6 +61,7 @@ int main(void) {
     struct Capability file_cap;
     struct Capability net_cap;
     struct Capability forged_cap;
+    struct Capability forged_type_cap;
 
     printf("IntentKernel Capability System Test Harness\n");
     printf("==========================================\n\n");
@@ -84,16 +85,18 @@ int main(void) {
     expect_equal("Single-use capability is rejected on second use", -1, result);
 
     net_cap = cap_table[net_cap_id];
+    forged_cap = net_cap;
+    memset(forged_cap.key, 0, sizeof(forged_cap.key));
+    expect_equal("Forged capability is rejected", -1, capability_validate(&forged_cap));
+    forged_type_cap = net_cap;
+    forged_type_cap.type = 99;
+    expect_equal("Capability with mismatched type is rejected", -1, capability_validate(&forged_type_cap));
     expect_equal("Multi-use capability validates on first use", 2, capability_validate(&net_cap));
     expect_equal("Multi-use capability validates on second use", 2, capability_validate(&net_cap));
     expect_equal("Multi-use capability validates on third use", 2, capability_validate(&net_cap));
     expect_equal("Multi-use capability is rejected after exhausting uses", -1, capability_validate(&net_cap));
 
-    forged_cap = cap_table[net_cap_id];
-    memset(forged_cap.key, 0, sizeof(forged_cap.key));
-    expect_equal("Forged capability is rejected", -1, capability_validate(&forged_cap));
-
-    expect_equal("Capability revoke succeeds", 0, capability_revoke((uint32_t)net_cap_id));
+    expect_equal("Capability revoke succeeds", 0, capability_revoke(net_cap_id));
     net_cap = cap_table[net_cap_id];
     expect_equal("Revoked capability is rejected", -1, capability_validate(&net_cap));
 
