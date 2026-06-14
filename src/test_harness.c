@@ -62,7 +62,7 @@ int getrandom(void *buf, size_t len, int f) {
     return 0;
 }
 
-int main() {
+int main(void) {
     int file_cap_id;
     int net_cap_id;
     int result;

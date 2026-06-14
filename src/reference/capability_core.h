@@ -27,5 +27,4 @@ extern int getrandom(void *buf, size_t len, int f);
 int capability_create(uint32_t type, uint64_t ttl, uint16_t uses);
 int capability_validate(struct Capability *cap);
 int capability_revoke(uint16_t id);
-
 #endif /* CAPABILITY_CORE_H */
