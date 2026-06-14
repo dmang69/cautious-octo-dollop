@@ -24,7 +24,7 @@ jobs:
 
       - name: Set up MSYS2
         if: runner.os == 'Windows'
-        uses: msys2/setup-msys2@v2
+        uses: msys2/setup-msys2@66cd2cce69caa17b53920067426061ca1de3a884
         with:
           msystem: MINGW64
           update: true

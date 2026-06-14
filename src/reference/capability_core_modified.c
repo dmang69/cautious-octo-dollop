@@ -42,6 +42,18 @@ static int ct_memcmp(const void *a, const void *b, size_t n) {
     return diff;
 }
 
+static void secure_zero(void *ptr, size_t n) {
+#if defined(__STDC_LIB_EXT1__)
+    memset_s(ptr, n, 0, n);
+#else
+    volatile uint8_t *p = ptr;
+
+    while (n-- > 0) {
+        *p++ = 0;
+    }
+#endif
+}
+
 /* ------------------------------------------------------------------ */
 /* capability_create                                                   */
 /*                                                                     */
@@ -113,7 +125,7 @@ int capability_validate(struct Capability *cap) {
     /* Auto-invalidate when uses exhausted */
     if (stored->uses == 0) {
         stored->expires = 0;
-        memset(stored->key, 0, CAP_KEY_SIZE);
+        secure_zero(stored->key, CAP_KEY_SIZE);
     }
 
     return (int)stored->type;
@@ -131,6 +143,6 @@ int capability_revoke(uint32_t id) {
 
     cap_table[id].expires = 0;
     cap_table[id].uses    = 0;
-    memset(cap_table[id].key, 0, CAP_KEY_SIZE);
+    secure_zero(cap_table[id].key, CAP_KEY_SIZE);
     return 0;
 }

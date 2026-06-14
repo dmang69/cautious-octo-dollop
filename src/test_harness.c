@@ -20,16 +20,6 @@ static void expect_equal(const char *label, int expected, int actual) {
     failures++;
 }
 
-static void expect_true(const char *label, int condition) {
-    if (condition) {
-        printf("[PASS] %s\n", label);
-        return;
-    }
-
-    printf("[FAIL] %s\n", label);
-    failures++;
-}
-
 uint64_t get_time(void) {
 #ifdef _WIN32
     LARGE_INTEGER frequency, counter;
@@ -38,8 +28,10 @@ uint64_t get_time(void) {
     return (uint64_t)(counter.QuadPart * 1000000000ULL / frequency.QuadPart);
 #else
     struct timespec ts;
-    if (timespec_get(&ts, TIME_UTC) != TIME_UTC)
-        return 0;
+    if (timespec_get(&ts, TIME_UTC) != TIME_UTC) {
+        fputs("timespec_get failed\n", stderr);
+        abort();
+    }
 
     return (uint64_t)ts.tv_sec * 1000000000ULL + (uint64_t)ts.tv_nsec;
 #endif
