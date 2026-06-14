@@ -21,7 +21,9 @@
       "identifier": "com.aios.shell",
       "icon": []
     },
-    "security": { "csp": null },
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    },
     "windows": [
       {
         "fullscreen": false,

@@ -43,8 +43,12 @@ impl KernelInterface for LinuxKernel {
 
     fn set_priority(&self, pid: u32, priority: i32) -> Result<()> {
         let result = unsafe { libc::setpriority(libc::PRIO_PROCESS, pid, priority) };
-        if result != 0 {
-            anyhow::bail!("setpriority failed for pid {}: errno={}", pid, result);
+        if result == -1 {
+            return Err(anyhow::anyhow!(
+                "setpriority failed for pid {}: {}",
+                pid,
+                std::io::Error::last_os_error()
+            ));
         }
         Ok(())
     }

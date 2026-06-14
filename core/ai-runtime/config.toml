@@ -1,4 +1,3 @@
-// Runtime configuration (serialized from config.toml)
 [runtime]
 telemetry_interval_ms = 500
 inference_threads = 2

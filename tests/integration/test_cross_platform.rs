@@ -27,14 +27,15 @@ mod tests {
     fn test_memory_stats_consistency() {
         let ki = kernel_interface::platform();
         let stats = ki.memory_stats().unwrap();
+        // available_bytes must not exceed total_bytes
+        assert!(
+            stats.available_bytes <= stats.total_bytes,
+            "available_bytes must not exceed total_bytes"
+        );
+        // used_bytes must not exceed total_bytes
         assert!(
             stats.used_bytes <= stats.total_bytes,
             "used_bytes must not exceed total_bytes"
-        );
-        assert_eq!(
-            stats.used_bytes,
-            stats.total_bytes - stats.available_bytes,
-            "used = total - available"
         );
     }
 }

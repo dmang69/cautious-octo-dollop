@@ -32,10 +32,26 @@ pub struct CommandResult {
 
 #[tauri::command]
 pub async fn run_command(command: String, _state: State<'_, AppState>) -> Result<String, String> {
-    // Execute the command in a shell and capture stdout/stderr.
-    let output = std::process::Command::new("sh")
-        .arg("-c")
-        .arg(&command)
+    // Split the command string into argv to avoid shell injection.
+    // Users who need a full shell pipeline should invoke sh explicitly.
+    let parts: Vec<&str> = command.split_whitespace().collect();
+    let (program, args) = match parts.split_first() {
+        Some((p, a)) => (*p, a),
+        None => return Ok(String::new()),
+    };
+
+    // Reject any program that resolves to a shell binary to prevent
+    // unintended shell metacharacter injection through the IPC boundary.
+    let basename = std::path::Path::new(program)
+        .file_name()
+        .and_then(|n| n.to_str())
+        .unwrap_or(program);
+    if matches!(basename, "sh" | "bash" | "zsh" | "fish" | "cmd" | "powershell" | "pwsh") {
+        return Err("Direct shell execution is not permitted via this command. Use the system terminal.".into());
+    }
+
+    let output = std::process::Command::new(program)
+        .args(args)
         .output()
         .map_err(|e| e.to_string())?;
     let stdout = String::from_utf8_lossy(&output.stdout).to_string();
