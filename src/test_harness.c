@@ -78,14 +78,12 @@ int main(void) {
         printf("[FAIL] Failed to create file capability\n");
         return 1;
     }
-    expect_true("Created file capability", file_cap_id >= 0);
 
     net_cap_id = capability_create(2, 10000000000ULL, 3);
     if (net_cap_id < 0) {
         printf("[FAIL] Failed to create network capability\n");
         return 1;
     }
-    expect_true("Created network capability", net_cap_id >= 0);
 
     file_cap = cap_table[file_cap_id];
     result = capability_validate(&file_cap);
@@ -103,7 +101,7 @@ int main(void) {
     memset(forged_cap.key, 0, sizeof(forged_cap.key));
     expect_equal("Forged capability is rejected", -1, capability_validate(&forged_cap));
 
-    capability_revoke(net_cap_id);
+    expect_equal("Capability revoke succeeds", 0, capability_revoke((uint32_t)net_cap_id));
     net_cap = cap_table[net_cap_id];
     expect_equal("Revoked capability is rejected", -1, capability_validate(&net_cap));
 

@@ -125,7 +125,10 @@ int capability_validate(struct Capability *cap) {
 /* Immediately invalidates a capability by zeroing its expiration.     */
 /* ------------------------------------------------------------------ */
 
-int capability_revoke(uint16_t id) {
+int capability_revoke(uint32_t id) {
+    if (id >= CAP_TABLE_SIZE)
+        return -1;
+
     cap_table[id].expires = 0;
     cap_table[id].uses    = 0;
     memset(cap_table[id].key, 0, CAP_KEY_SIZE);
