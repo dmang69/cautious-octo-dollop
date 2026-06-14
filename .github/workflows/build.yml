@@ -1,13 +1,39 @@
-name: Build
+name: Cross-platform host tests
 
 on:
   push:
   pull_request:
 
 jobs:
-  build:
-    runs-on: windows-latest
+  host-tests:
+    name: Host tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+
     steps:
       - uses: actions/checkout@v4
-      - name: Build
-        run: pwsh ./scripts/build.ps1
+
+      - name: Set up MSYS2
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            make
+            mingw-w64-x86_64-gcc
+
+      - name: Build and run host tests
+        if: runner.os != 'Windows'
+        run: make test
+
+      - name: Build and run host tests
+        if: runner.os == 'Windows'
+        shell: msys2 {0}
+        run: make test

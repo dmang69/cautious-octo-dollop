@@ -85,27 +85,38 @@ int capability_create(uint32_t type, uint64_t ttl, uint16_t uses) {
 /* ------------------------------------------------------------------ */
 
 int capability_validate(struct Capability *cap) {
+    struct Capability *stored;
+
+    if (cap == NULL)
+        return -1;
+
+    stored = &cap_table[cap->id];
+
     /* Check expiration */
-    if (cap->expires < get_time())
+    if (cap->expires < get_time() || stored->expires < get_time())
         return -1;
 
     /* Check remaining uses */
-    if (cap->uses == 0)
+    if (cap->uses == 0 || stored->uses == 0)
+        return -1;
+
+    if (cap->type != stored->type)
         return -1;
 
     /* Constant-time key comparison */
-    if (ct_memcmp(cap->key, cap_table[cap->id].key, CAP_KEY_SIZE) != 0)
+    if (ct_memcmp(cap->key, stored->key, CAP_KEY_SIZE) != 0)
         return -1;
 
     /* Consume one use */
-    cap_table[cap->id].uses -= 1;
+    stored->uses -= 1;
 
     /* Auto-invalidate when uses exhausted */
-    if (cap_table[cap->id].uses == 0) {
-        cap_table[cap->id].expires = 0;
+    if (stored->uses == 0) {
+        stored->expires = 0;
+        memset(stored->key, 0, CAP_KEY_SIZE);
     }
 
-    return (int)cap->type;
+    return (int)stored->type;
 }
 
 /* ------------------------------------------------------------------ */
@@ -115,9 +126,6 @@ int capability_validate(struct Capability *cap) {
 /* ------------------------------------------------------------------ */
 
 int capability_revoke(uint16_t id) {
-    if (id >= CAP_TABLE_SIZE)
-        return -1;
-
     cap_table[id].expires = 0;
     cap_table[id].uses    = 0;
     memset(cap_table[id].key, 0, CAP_KEY_SIZE);

@@ -7,6 +7,7 @@ ASFLAGS = -f elf64
 # Host Compiler Setup (for testing)
 HOST_CC = gcc
 HOST_CFLAGS = -Wall -Wextra -pedantic -std=c11 -O2
+HOST_BIN = test_harness$(if $(filter Windows_NT,$(OS)),.exe,)
 
 DEBUG_FLAGS = -g -DDEBUG
 INCLUDES = -Isrc
@@ -40,7 +41,10 @@ capability_core.o: src/reference/capability_core_modified.c src/reference/capabi
 
 # Build the test harness
 test_harness: src/test_harness.c capability_core.o
-	$(HOST_CC) $(HOST_CFLAGS) $(INCLUDES) -o test_harness src/test_harness.c capability_core.o -lrt
+	$(HOST_CC) $(HOST_CFLAGS) $(INCLUDES) -o $(HOST_BIN) src/test_harness.c capability_core.o
+
+test: test_harness
+	./$(HOST_BIN)
 
 # Emulation
 run: kernel
@@ -48,6 +52,6 @@ run: kernel
 
 # Clean build artifacts
 clean:
-	rm -f test_harness *.o *.elf *.bin *.iso src/arch/x86_64/boot/*.o src/kernel/init/*.o src/kernel/console/*.o
+	rm -f test_harness test_harness.exe *.o *.elf *.bin *.iso src/arch/x86_64/boot/*.o src/kernel/init/*.o src/kernel/console/*.o
 
-.PHONY: all debug clean kernel run
+.PHONY: all debug clean kernel run test test_harness

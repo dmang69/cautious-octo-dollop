@@ -1,6 +1,7 @@
 #ifndef CAPABILITY_CORE_H
 #define CAPABILITY_CORE_H
 
+#include <stddef.h>
 #include <stdint.h>
 
 #define CAP_TABLE_SIZE   65536    /* Maximum concurrent capabilities    */
