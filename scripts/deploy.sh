@@ -36,10 +36,15 @@ cd "${PROJECT_ROOT}/models/scheduler"
 
 if [ ! -f "scheduler_model.onnx" ]; then
     echo "Training new model..."
-    python3 train_advanced.py \
+    if ! python3 train_advanced.py \
         --episodes 500 \
         --batch-size 128 \
-        --output scheduler_model.onnx
+        --output scheduler_model.onnx; then
+        echo -e "${RED}✗ Model training failed.${NC}"
+        echo -e "${YELLOW}  Ensure Python 3 and required ML dependencies are installed:${NC}"
+        echo -e "    pip install -r ${PROJECT_ROOT}/models/requirements.txt"
+        exit 1
+    fi
     
     echo -e "${GREEN}✓ Model trained and exported${NC}\n"
 else
@@ -105,25 +110,31 @@ case "$OS" in
             cp "${PROJECT_ROOT}"/shell/tauri-app/src-tauri/target/release/bundle/deb/*.deb "${DIST_DIR}/" 2>/dev/null || true
         fi
         
+        # Copy systemd service file into dist so install.sh can reference it directly
+        mkdir -p "${DIST_DIR}/systemd"
+        cp "${PROJECT_ROOT}/platform/linux/systemd/ai-context-manager.service" "${DIST_DIR}/systemd/" 2>/dev/null || true
+
         # Create installation script
         cat > "${DIST_DIR}/install.sh" << 'EOF'
 #!/bin/bash
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo "Installing AI OS..."
 
 # Install runtime
-sudo cp ai-runtime /usr/local/bin/
-sudo cp libkernel_interface.so /usr/local/lib/
+sudo cp "${SCRIPT_DIR}/ai-runtime" /usr/local/bin/
+sudo cp "${SCRIPT_DIR}/libkernel_interface.so" /usr/local/lib/
 
 # Install systemd service
-sudo cp ../platform/linux/systemd/ai-context-manager.service /etc/systemd/system/
+sudo cp "${SCRIPT_DIR}/systemd/ai-context-manager.service" /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable ai-context-manager
 
 # Install shell (if DEB package exists)
-if ls *.deb 1> /dev/null 2>&1; then
-    sudo dpkg -i *.deb
+if ls "${SCRIPT_DIR}"/*.deb 1> /dev/null 2>&1; then
+    sudo dpkg -i "${SCRIPT_DIR}"/*.deb
 fi
 
 echo "Installation complete!"
@@ -175,8 +186,8 @@ echo -e "2. Install system-wide: ${GREEN}cd dist && sudo ./install.sh${NC} (Linu
 echo -e "3. Launch shell: ${GREEN}Open the .AppImage/.dmg/.msi file${NC}"
 
 echo -e "\n${YELLOW}Documentation:${NC}"
-echo -e "  - User Guide: ${PROJECT_ROOT}/docs/guides/user-guide.md"
-echo -e "  - API Reference: ${PROJECT_ROOT}/docs/api/grpc-reference.md"
-echo -e "  - Contributing: ${PROJECT_ROOT}/CONTRIBUTING.md"
+echo -e "  - User Guide: ${DIST_DIR}/../docs/guides/user-guide.md"
+echo -e "  - API Reference: ${DIST_DIR}/../docs/api/grpc-reference.md"
+echo -e "  - Contributing: ${DIST_DIR}/../CONTRIBUTING.md"
 
 echo -e "\n${GREEN}Deployment script completed successfully!${NC}"
