@@ -1,0 +1,18 @@
+[package]
+name = "intentos"
+version.workspace = true
+edition.workspace = true
+description = "IntentOS reference runtime entry point"
+
+[[bin]]
+name = "intentos"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = { workspace = true }
+intentos-kernel = { path = "../intentos-kernel" }
+intentos-shell = { path = "../intentos-shell" }
+intentos-utilities = { path = "../intentos-utilities" }
+
+[dev-dependencies]
+cargo_metadata = "0.18"

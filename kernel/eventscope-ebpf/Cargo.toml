@@ -1,0 +1,30 @@
+[package]
+name = "eventscope-ebpf"
+version.workspace = true
+edition.workspace = true
+description = "IntentKernel Phase 2 — eBPF LSM hooks + userspace loader (aya)"
+
+[lib]
+name = "eventscope_ebpf"
+path = "src/lib.rs"
+
+[[bin]]
+name = "eventscope-bpf-loader"
+path = "src/bin/loader_main.rs"
+required-features = ["bpf"]
+
+[features]
+default = []
+# Enable aya-based BPF load/pin. Off by default so WSL2/CI builds without root.
+bpf = ["dep:aya", "dep:aya-log"]
+
+[dependencies]
+anyhow = { workspace = true }
+clap = { workspace = true }
+intentkernel-core = { path = "../intentkernel-core" }
+thiserror = "2"
+tracing = { workspace = true }
+aya = { version = "0.13", optional = true }
+aya-log = { version = "0.2", optional = true }
+
+[dev-dependencies]

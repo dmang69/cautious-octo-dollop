@@ -1,0 +1,9 @@
+{
+  "name": "intentkernel-scripts",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "jimp": "^1.6.0",
+    "to-ico": "^1.1.5"
+  }
+}

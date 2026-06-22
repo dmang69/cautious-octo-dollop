@@ -1,7 +1,0 @@
-﻿Chapter,Code Reference
-Ch3 — Security Model,`kernel/filter.c` (Filter VM: LOAD\_CAP→VERIFY→CHECK\_TYPE→CHECK\_EXPIRY→ALLOW/DENY)
-Ch4 — IPC & Capabilities,"`lib/ipc.c`, `lib/caps.c` (Unix domain sockets, token database)"
-Ch5 — Sandboxing,`user/wasm_runtime/sandbox.c` (gas-limited WASM with cap gates)
-Ch6 — Evaluation,"`tests/test_harness.c` (10 adversarial tests, 0 escapes)"
-Ch7 — PQC Integration,`lib/pqc.c` (ML-DSA-87 stub + liboqs migration path)
-Appendix — Migration,"`docs/MIGRATION.md`, `tools/intentkernel-migrate`"

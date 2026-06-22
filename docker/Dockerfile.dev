@@ -1,0 +1,15 @@
+FROM rust:1.85-bookworm
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    pkg-config libdbus-1-dev nodejs npm protobuf-compiler \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+COPY . .
+
+RUN cargo build --release -p ai-runtime -p intent-verifier -p intentkernel-cli -p intentkernel-update -p ikd-verify \
+    && ./kernel/build_parser_wasm.sh
+
+EXPOSE 50051 7879 1420
+
+CMD ["bash", "-lc", "./target/release/intent-verifier & ./target/release/ai-runtime & wait"]

@@ -1,6 +1,0 @@
-﻿Thesis Chapter,Code Reference
-Ch3 — Security Model,`kernel/filter.c` (Filter VM)
-Ch4 — IPC,`lib/ipc.c` + `lib/caps.c`
-Ch5 — Sandboxing,`user/wasm_runtime/sandbox.c`
-Ch6 — Evaluation,`tests/test_harness.c` + `metrics.csv`
-Ch7 — Quantum,`lib/quantum.c` + `user/qsimd/sim.c`

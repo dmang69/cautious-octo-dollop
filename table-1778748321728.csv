@@ -1,3 +1,0 @@
-﻿Component,Files,Purpose
-**Headers** (`include/`),9,"Core types, IPC, capabilities, PQC, CBOR, quantum, SHA3, Merkle, ML"
-**Libraries** (`lib/`),8,"Unix domain socket IPC, capability tokens, HMAC-SHA3 PQC stubs, CBOR serialization, statevector quantum simulator (H/X/Y/Z/CNOT), Keccak-f\[1600] SHA3-256, binary Merkle tree, tiny NN + pattern classifier"

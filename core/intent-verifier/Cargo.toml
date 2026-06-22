@@ -1,0 +1,17 @@
+[package]
+name = "intent-verifier"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+anyhow.workspace = true
+clap.workspace = true
+intentkernel-platform = { path = "../intentkernel-platform" }
+intentkernel-crypto = { path = "../../crypto/intentkernel-crypto" }
+intentkernel-util = { path = "../../utilities/intentkernel-util" }
+hex = "0.4"

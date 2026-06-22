@@ -1,0 +1,28 @@
+[package]
+name = "eventscope"
+version.workspace = true
+edition.workspace = true
+description = "IntentKernel syscall interception — capability enforcement at resource boundaries"
+
+[lib]
+name = "eventscope"
+path = "src/lib.rs"
+
+[[bin]]
+name = "eventscope"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = { workspace = true }
+clap = { workspace = true }
+eventscope-ebpf = { path = "../eventscope-ebpf" }
+hex = "0.4"
+intentkernel-core = { path = "../intentkernel-core" }
+intentkernel-crypto = { path = "../../crypto/intentkernel-crypto" }
+intentkernel-util = { path = "../../utilities/intentkernel-util" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = "2"
+
+[dev-dependencies]
+intentkernel-crypto = { path = "../../crypto/intentkernel-crypto", features = ["ed25519"] }

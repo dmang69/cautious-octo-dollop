@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intent Kernel Dashboard</title>
+  <link rel="icon" href="../brand/intent-kernel-logo-dark.png" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1020;
+      --panel: #141b33;
+      --border: #2a3558;
+      --text: #e8eefc;
+      --muted: #9db0dc;
+      --accent: #4d9dff;
+      --amber: #ffb347;
+      --ok: #5dffa8;
+      --bad: #ff7b7b;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse 70% 45% at 50% -10%, rgba(77, 157, 255, 0.18), transparent),
+        var(--bg);
+      color: var(--text);
+      padding: 2rem;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; }
+    .hero {
+      display: flex;
+      gap: 1.25rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .hero img {
+      width: 112px;
+      height: 112px;
+      border-radius: 18px;
+      object-fit: cover;
+      box-shadow: 0 14px 40px rgba(30, 120, 255, 0.28);
+      border: 1px solid rgba(90, 140, 255, 0.3);
+    }
+    .eyebrow {
+      margin: 0 0 0.25rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+    h1 { margin: 0; font-size: 1.85rem; }
+    .sub { margin: 0.35rem 0 0; color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 1.15rem;
+    }
+    .card h2 {
+      margin: 0 0 0.75rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .status-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(42, 53, 88, 0.65);
+    }
+    .status-line:last-child { border-bottom: 0; }
+    .pill {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+    }
+    .pill.ok { color: var(--ok); background: rgba(93, 255, 168, 0.12); }
+    .pill.bad { color: var(--bad); background: rgba(255, 123, 123, 0.12); }
+    .pill.wait { color: var(--muted); background: rgba(157, 176, 220, 0.12); }
+    code {
+      background: #1c2547;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.92rem;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .commands p { margin: 0.45rem 0; }
+    .footer { margin-top: 1.25rem; color: var(--muted); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <img src="../brand/intent-kernel-logo-dark.png" alt="Intent Kernel logo" />
+      <div>
+        <p class="eyebrow">Intent Kernel AI OS</p>
+        <h1>Dashboard</h1>
+        <p class="sub">Local health view for runtime, verifier, and install status.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Services</h2>
+        <div class="status-line">
+          <span>AI Runtime gRPC</span>
+          <span id="runtime-pill" class="pill wait">checking</span>
+        </div>
+        <div class="status-line">
+          <span>Intent Verifier</span>
+          <span id="verifier-pill" class="pill wait">checking</span>
+        </div>
+        <div class="status-line">
+          <span>Version</span>
+          <span id="version">—</span>
+        </div>
+      </div>
+
+      <div class="card commands">
+        <h2>Quick commands</h2>
+        <p><code>ikd-verify --kernel-check --os win11</code></p>
+        <p><code>intentkernel status</code></p>
+        <p><code>intentkernel configure</code></p>
+        <p><code>ai-runtime --dashboard</code></p>
+      </div>
+    </div>
+
+    <p class="footer">
+      For live gRPC metrics, launch the Tauri shell:
+      <code>cd shell\tauri-app; npm run tauri dev</code>
+      · <a href="https://docs.intentkernel.ai">Documentation</a>
+    </p>
+  </div>
+
+  <script>
+    async function probeTcp(host, port) {
+      try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 1200);
+        await fetch(`http://${host}:${port}`, { mode: "no-cors", signal: controller.signal });
+        clearTimeout(timer);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    async function probeVerifier() {
+      try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 1200);
+        const resp = await fetch("http://127.0.0.1:7879", {
+          method: "GET",
+          signal: controller.signal,
+        });
+        clearTimeout(timer);
+        return resp.ok || resp.status === 400 || resp.status === 404;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function setPill(id, ok) {
+      const el = document.getElementById(id);
+      el.textContent = ok ? "up" : "down";
+      el.className = `pill ${ok ? "ok" : "bad"}`;
+    }
+
+    async function refresh() {
+      const [runtime, verifier] = await Promise.all([
+        probeTcp("127.0.0.1", 50051),
+        probeVerifier(),
+      ]);
+      setPill("runtime-pill", runtime);
+      setPill("verifier-pill", verifier);
+      try {
+        const version = await fetch("../VERSION").then((r) => r.ok ? r.text() : "dev");
+        document.getElementById("version").textContent = version.trim();
+      } catch (_) {
+        document.getElementById("version").textContent = "dev";
+      }
+    }
+
+    refresh();
+    setInterval(refresh, 5000);
+  </script>
+</body>
+</html>

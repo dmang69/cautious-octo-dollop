@@ -1,0 +1,25 @@
+[package]
+name = "eventscope-lsm"
+version.workspace = true
+edition.workspace = true
+description = "IntentKernel Phase 2 LSM daemon — publishes handles to eBPF maps"
+
+[[bin]]
+name = "eventscope-lsm"
+path = "src/main.rs"
+
+[features]
+default = []
+bpf = ["eventscope-ebpf/bpf"]
+
+[dependencies]
+anyhow = { workspace = true }
+clap = { workspace = true }
+eventscope-ebpf = { path = "../eventscope-ebpf" }
+intentkernel-core = { path = "../intentkernel-core" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = "2"
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+tokio = { workspace = true, features = ["io-util", "macros", "rt-multi-thread", "sync"] }

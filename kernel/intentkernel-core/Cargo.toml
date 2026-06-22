@@ -1,0 +1,16 @@
+[package]
+name = "intentkernel-core"
+version.workspace = true
+edition.workspace = true
+description = "IntentKernel microkernel — capability table, handles, syscall gate"
+
+[dependencies]
+anyhow = { workspace = true }
+intentkernel-crypto = { path = "../../crypto/intentkernel-crypto" }
+intentkernel-util = { path = "../../utilities/intentkernel-util" }
+rand = "0.8"
+thiserror = "2"
+tracing = { workspace = true }
+
+[dev-dependencies]
+hex = "0.4"

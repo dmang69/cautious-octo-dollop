@@ -1,6 +1,0 @@
-﻿Critique,Action,Status
-"**""Roll your own crypto""** (fatal flaw)",Rewrote `lib/pqc.c` with proper liboqs-compatible API + clearly-marked HMAC-SHA3 fallback,**FIXED**
-**Quantum simulator is a distraction**,"Moved `qsimd/`, `qjobd/`, `qproofd/`, `quantumd/`, `lib/quantum.c` → `optional/quantum/`",**REMOVED from core**
-**ML neural network is scope creep**,"Simplified `lib/ml.c` to pattern-only; removed weights, ReLU, softmax",**SIMPLIFIED**
-**AI core is peripheral**,Moved `user/ai_core/` → `optional/ai_core/`,**MOVED**
-**Conflicting goals**,Single thesis focus: *event-scoped capability enforcement*,**FOCUSED**

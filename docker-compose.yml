@@ -1,0 +1,15 @@
+services:
+  ai-os-dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    container_name: intentkernel-ai-os-dev
+    ports:
+      - "50051:50051"
+      - "7879:7879"
+    environment:
+      AI_RUNTIME_ADDR: "0.0.0.0:50051"
+      INTENT_VERIFIER_ADDR: "0.0.0.0:7879"
+    volumes:
+      - .:/workspace
+    restart: unless-stopped

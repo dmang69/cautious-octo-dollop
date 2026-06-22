@@ -1,0 +1,15 @@
+[package]
+name = "ikd-verify"
+version.workspace = true
+edition.workspace = true
+description = "IntentKernel deployment verifier (kernel-check, OS readiness)"
+
+[[bin]]
+name = "ikd-verify"
+path = "src/main.rs"
+
+[dependencies]
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true

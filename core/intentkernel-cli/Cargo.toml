@@ -1,0 +1,16 @@
+[package]
+name = "intentkernel-cli"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "intentkernel"
+path = "src/main.rs"
+
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+intentd = { path = "../intentd" }
+serde.workspace = true
+serde_json.workspace = true
+toml = "0.8"

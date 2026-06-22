@@ -1,0 +1,37 @@
+[workspace]
+resolver = "2"
+members = [
+    "core/ai-runtime",
+    "core/capd",
+    "core/leasebroker",
+    "core/intentd",
+    "core/intent-verifier",
+    "core/intentkernel-platform",
+    "core/intentkernel-update",
+    "core/intentkernel-cli",
+    "core/ikd-verify",
+    "crypto/intentkernel-crypto",
+    "kernel/intentkernel-core",
+    "kernel/eventscope",
+    "kernel/eventscope-ebpf",
+    "kernel/eventscope-lsm",
+    "kernel/parser-wasm",
+    "shell/intentkernel-sh",
+    "utilities/intentkernel-util",
+]
+exclude = ["shell/tauri-app/src-tauri"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+
+[workspace.dependencies]
+tokio = { version = "1", features = ["full"] }
+tonic = "0.12"
+prost = "0.13"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }

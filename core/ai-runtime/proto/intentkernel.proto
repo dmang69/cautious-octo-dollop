@@ -1,0 +1,85 @@
+syntax = "proto3";
+package intentkernel.v1;
+
+message Empty {}
+message SystemSnapshot {
+  float cpu_percent = 1;
+  float mem_percent = 2;
+  float disk_io_mbps = 3;
+  float net_rx_mbps = 4;
+  float net_tx_mbps = 5;
+  uint32 queue_depth = 6;
+  uint64 uptime_secs = 7;
+  uint32 process_count = 8;
+  uint32 ipc_queued = 9;
+}
+message StreamMetricsRequest { uint32 interval_ms = 1; }
+service TelemetryService {
+  rpc GetSystemSnapshot(Empty) returns (SystemSnapshot);
+  rpc StreamMetrics(StreamMetricsRequest) returns (stream SystemSnapshot);
+}
+message SchedulerPolicy { repeated double time_slices_ms = 1; }
+message SchedulerOptimizeRequest { repeated float telemetry = 1; }
+service SchedulerService {
+  rpc GetCurrentPolicy(Empty) returns (SchedulerPolicy);
+  rpc OptimizePolicy(SchedulerOptimizeRequest) returns (SchedulerPolicy);
+}
+message LookupRequest { string target = 1; }
+message LookupResult {
+  string target = 1;
+  string target_type = 2;
+  string verdict = 3;
+  string threat_level = 4;
+  float reputation_score = 5;
+  uint64 timestamp = 6;
+  bool descrambler_validated = 7;
+}
+message ExecuteRequest {
+  uint64 handle = 1;
+  uint32 action = 2;
+}
+message ExecuteResponse {
+  bool allowed = 1;
+  uint32 resource_type = 2;
+  string denial_reason = 3;
+}
+service CommandService {
+  rpc Lookup(LookupRequest) returns (LookupResult);
+  rpc Execute(ExecuteRequest) returns (ExecuteResponse);
+}
+
+message RegisterTokenRequest {
+  bytes token_cbor = 1;
+  uint32 resource_type = 2;
+}
+message RegisterTokenResponse {
+  uint64 handle = 1;
+  string error = 2;
+}
+message InvokeCapabilityRequest {
+  uint64 handle = 1;
+  uint64 sequence = 2;
+  uint32 action = 3;
+}
+message InvokeCapabilityResponse {
+  bool allowed = 1;
+  uint32 resource_type = 2;
+  string denial_reason = 3;
+}
+message RevokeHandleRequest {
+  uint64 handle = 1;
+}
+message RevokeHandleResponse {
+  bool ok = 1;
+  string error = 2;
+}
+message KernelStats {
+  uint32 active_capabilities = 1;
+  uint32 registered_handles = 2;
+}
+service CapabilityService {
+  rpc RegisterToken(RegisterTokenRequest) returns (RegisterTokenResponse);
+  rpc InvokeCapability(InvokeCapabilityRequest) returns (InvokeCapabilityResponse);
+  rpc RevokeHandle(RevokeHandleRequest) returns (RevokeHandleResponse);
+  rpc GetKernelStats(Empty) returns (KernelStats);
+}

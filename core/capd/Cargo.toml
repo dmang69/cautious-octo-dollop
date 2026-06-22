@@ -1,0 +1,20 @@
+[package]
+name = "capd"
+version.workspace = true
+edition.workspace = true
+description = "IntentKernel capability broker daemon (token issuer)"
+
+[[bin]]
+name = "capd"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = { workspace = true }
+clap = { workspace = true }
+hex = "0.4"
+intentkernel-crypto = { path = "../../crypto/intentkernel-crypto" }
+intentkernel-util = { path = "../../utilities/intentkernel-util" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }

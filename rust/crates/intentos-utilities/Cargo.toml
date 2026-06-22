@@ -1,0 +1,11 @@
+[package]
+name = "intentos-utilities"
+version.workspace = true
+edition.workspace = true
+description = "IntentOS utilities — in-memory VFS, AI gateway stub"
+
+[dependencies]
+anyhow = { workspace = true }
+intentos-kernel = { path = "../intentos-kernel" }
+serde = { workspace = true }
+thiserror = { workspace = true }

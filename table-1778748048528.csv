@@ -1,6 +1,0 @@
-﻿Component,File,Purpose
-**Benchmark Suite**,`tests/benchmark.c`,"10 microbenchmarks, CSV export"
-**Fuzzing Harness**,`tests/fuzz.c`,"8 strategies, 16K ops, chaos testing"
-**Package Manager**,`tools/ikpm.c`,Install/remove/list/search/verify/export
-**Security Dashboard**,`ikmos/interfaces/dashboard.py`,Real-time TUI with stats/events/caps
-**Enhanced Entry Point**,`ikmos/main.py`,argparse with --shell/--dashboard/--version

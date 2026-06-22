@@ -1,0 +1,12 @@
+[package]
+name = "intentos-shell"
+version.workspace = true
+edition.workspace = true
+description = "IntentOS interactive shell and command dispatch"
+
+[dependencies]
+anyhow = { workspace = true }
+intentos-kernel = { path = "../intentos-kernel" }
+intentos-utilities = { path = "../intentos-utilities" }
+serde = { workspace = true }
+serde_json = { workspace = true }

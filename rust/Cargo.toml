@@ -1,0 +1,25 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/intentos",
+    "crates/intentos-kernel",
+    "crates/intentos-shell",
+    "crates/intentos-utilities",
+]
+default-members = ["crates/intentos"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+
+[workspace.dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+ed25519-dalek = { version = "2", features = ["rand_core"] }
+rand = "0.8"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha3 = "0.10"
+thiserror = "2"
+uuid = { version = "1", features = ["v4"] }

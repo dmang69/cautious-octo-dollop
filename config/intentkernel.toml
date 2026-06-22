@@ -1,0 +1,4 @@
+version = "1.0.0"
+runtime_addr = "127.0.0.1:50051"
+verifier_addr = "127.0.0.1:7879"
+dashboard = "share/dashboard/index.html"
