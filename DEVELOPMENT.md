@@ -34,9 +34,18 @@ npm run build
 # Desktop: npm run tauri dev  (requires libdbus on Linux)
 ```
 
+## Ransomware demo
+
+```bash
+cd rust
+cargo run -p ransomware-demo --release
+```
+
+Demonstrates bulk encryption blocked on in-memory VFS (1/5 files encryptable with single stolen handle).
+
 ## Next development targets
 
-1. `ransomware-demo` crate under `rust/crates/` — VFS denial without per-file handles
+1. ~~`ransomware-demo` crate~~ — done
 2. Wire Tauri shell fully to remote `CapabilityService` when ai-runtime is up
 3. Migrate legacy crates into `rust/crates/ikrl-*` naming
 4. PQC feature flag for `intentos-kernel` crypto (ML-DSA-87 behind `--features pqc`)
