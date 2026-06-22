@@ -1,0 +1,15 @@
+[package]
+name = "ransomware-demo"
+version.workspace = true
+edition.workspace = true
+description = "Demonstrates VFS denial without per-file capability handles"
+
+[[bin]]
+name = "ransomware-demo"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = { workspace = true }
+intentos-kernel = { path = "../intentos-kernel" }
+intentos-utilities = { path = "../intentos-utilities" }
+intentos-shell = { path = "../intentos-shell" }

@@ -2,6 +2,7 @@
 resolver = "2"
 members = [
     "crates/intentos",
+    "crates/ransomware-demo",
     "crates/intentos-kernel",
     "crates/intentos-shell",
     "crates/intentos-utilities",

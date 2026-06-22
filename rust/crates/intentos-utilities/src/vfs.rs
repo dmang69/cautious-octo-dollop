@@ -26,6 +26,11 @@ impl VirtualFs {
         fs
     }
 
+    /// Seed a file for demo/test setup (bypasses capability gate).
+    pub fn seed(&mut self, path: &str, content: &str) {
+        self.files.insert(path.to_string(), content.to_string());
+    }
+
     pub fn list(&self) -> Vec<String> {
         let mut paths: Vec<_> = self.files.keys().cloned().collect();
         paths.sort();
